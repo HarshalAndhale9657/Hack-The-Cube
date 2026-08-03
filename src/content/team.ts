@@ -53,7 +53,6 @@ export const leadershipMembers: LeadershipMember[] = [
     name: "Dr. Ananya Sen",
     photoUrl: PLACEHOLDER,
     designation: "Head of Department, CSE",
-    message: "The CSI Club has always been at the forefront of technical excellence. This 24-hour hackathon will test not just your coding skills, but your endurance, teamwork, and problem-solving abilities.",
+    message: "The CSI Student Chapter has always been at the forefront of technical excellence. This 24-hour hackathon will test not just your coding skills, but your endurance, teamwork, and problem-solving abilities.",
   },
 ];
-

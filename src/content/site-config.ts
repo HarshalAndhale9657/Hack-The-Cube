@@ -11,17 +11,17 @@ export const siteConfig = {
   name: "Hack the Cube 2026",
   tagline: "Where Innovation Meets Execution",
   description:
-    "CSI Club's flagship national-level 24-hour hackathon featuring a Technical Talk Show, industry speakers, and ₹3,00,000+ in prizes.",
+    "A 24-hour national-level hackathon organized by the CSI Student Chapter at Dr. D. Y. Patil Institute of Technology, Pimpri, Pune — featuring interactive podcast-style speaker sessions, alumni mentorship, and ₹1,50,000 in prizes across 3 technical tracks.",
   url: "https://hackthecube.tech", // Update with actual domain
 
   // ── Event Dates (ISO 8601, IST) ──
   dates: {
     registrationOpens: "2026-08-15T00:00:00+05:30",
     registrationCloses: "2026-09-15T23:59:59+05:30",
-    eventStart: "2026-10-04T09:00:00+05:30",
+    eventStart: "2026-10-04T08:00:00+05:30",
     eventEnd: "2026-10-05T17:00:00+05:30",
-    hackathonStart: "2026-10-04T18:00:00+05:30",
-    hackathonEnd: "2026-10-05T18:00:00+05:30",
+    hackathonStart: "2026-10-04T15:30:00+05:30",
+    hackathonEnd: "2026-10-05T15:30:00+05:30",
     resultsAnnouncement: "2026-10-05T16:00:00+05:30",
   },
 
@@ -29,7 +29,8 @@ export const siteConfig = {
   registration: {
     maxTeamSize: 4,
     minTeamSize: 2,
-    registrationFee: 500, // INR per team/individual
+    registrationFee: 0, // TBD — will be finalized based on budget & sponsorship
+    registrationFeeDisplay: "To Be Announced",
     spotsTotal: 500,
     // spotsRemaining will be dynamic if connected to a backend
   },
@@ -57,16 +58,16 @@ export const siteConfig = {
       { label: "Event Helpdesk", number: "+91 98205 33445" },
     ],
     address:
-      "CSI Club, Department of Computer Science, CSI Institute of Technology, Tech Park Campus, Sector 5, City, State - 400001",
+      "CSI Student Chapter, Dr. D. Y. Patil Institute of Technology, Pimpri, Pune",
   },
 
   // ── Stats (for homepage counters) ──
   stats: [
     { label: "Participants", value: 500, suffix: "+" },
-    { label: "Prize Pool", value: 300000, prefix: "₹", suffix: "+" },
+    { label: "Prize Pool", value: 150000, prefix: "₹", suffix: "" },
     { label: "Hours", value: 24, suffix: "" },
-    { label: "Speakers", value: 10, suffix: "+" },
-    { label: "Problem Statements", value: 15, suffix: "+" },
+    { label: "Tracks", value: 3, suffix: "" },
+    { label: "Problem Statements", value: 18, suffix: "" },
   ],
 
   // ── Navigation Links (Single-page anchors & Mega-menu) ──
@@ -85,18 +86,18 @@ export const siteConfig = {
       label: "Tracks & Challenges",
       href: "#tracks",
       subItems: [
-        { label: "Domain Tracks", href: "#tracks", description: "AI/ML, FinTech, Web3, CyberSecurity" },
-        { label: "Problem Statements", href: "#problems", description: "Released on hackathon day" },
-        { label: "Prize Pool & Perks", href: "#prizes", description: "₹3,00,000+ cash prizes & internships" },
+        { label: "Technical Tracks", href: "#tracks", description: "3 domain tracks with 6 problem statements each" },
+        { label: "Problem Statements", href: "#problems", description: "18 total — released on hackathon day" },
+        { label: "Prize Pool & Perks", href: "#prizes", description: "₹1,50,000 cash prizes across 3 tracks" },
       ],
     },
     {
       label: "Schedule & People",
       href: "#timeline",
       subItems: [
-        { label: "24-Hour Timeline", href: "#timeline", description: "Keynote, hackathon kickoff & judging" },
-        { label: "Speakers Panel", href: "#speakers", description: "Industry keynotes & talk show guests" },
-        { label: "Organizing Team", href: "#team", description: "CSI Club student & faculty leads" },
+        { label: "Event Timeline", href: "#timeline", description: "Inauguration, podcast sessions & 24-hour hackathon" },
+        { label: "Speaker Sessions", href: "#speakers", description: "3 interactive podcast-style industry sessions" },
+        { label: "Organizing Team", href: "#team", description: "CSI Student Chapter leads & faculty coordinators" },
         { label: "College Leadership", href: "#leadership", description: "Messages from Director & HOD" },
       ],
     },
@@ -104,8 +105,8 @@ export const siteConfig = {
       label: "Venue & More",
       href: "#venue",
       subItems: [
-        { label: "Main Venue & Maps", href: "#venue", description: "Campus address, parking & entry gates" },
-        { label: "Sponsors & Partners", href: "#sponsors", description: "Title, Co-Sponsor & Associate" },
+        { label: "Main Venue & Maps", href: "#venue", description: "DIT Pimpri campus, parking & entry gates" },
+        { label: "Sponsors & Partners", href: "#sponsors", description: "Industry & community partners" },
         { label: "FAQs", href: "#faq", description: "Registration, food, wifi & eligibility" },
       ],
     },

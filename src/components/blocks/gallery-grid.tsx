@@ -163,7 +163,7 @@ export function GalleryGrid({ images = realGalleryImages }: GalleryGridProps) {
                 number="12"
                 overline="Highlights"
                 title="Last Year's Memories"
-                subtitle="Relive moments, teamwork, and celebrations from previous CSI Club events"
+                subtitle="Relive moments, teamwork, and celebrations from previous CSI Student Chapter events"
                 className="mb-4 text-left"
               />
 

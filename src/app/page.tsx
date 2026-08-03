@@ -27,7 +27,7 @@ import Link from "next/link";
 export default function SinglePageHome() {
   return (
     <>
-      {/* 01. Hero Section — CSI Club Presents */}
+      {/* 01. Hero Section — CSI Student Chapter Presents */}
       <HeroBlock />
 
       {/* 01. Full-Screen Hype Trailer */}
@@ -42,8 +42,8 @@ export default function SinglePageHome() {
         <SectionHeading
           number="04"
           overline="Learn & Engage"
-          title="Technical Talk Show & Keynotes"
-          subtitle="Industry leaders, founders, and CTOs sharing deep insights and technological roadmaps"
+          title="Interactive Podcast Sessions & Speakers"
+          subtitle="3 industry professionals in podcast-style discussions (30 min each + 15 min Q&A) — questions sourced from registered participants"
         />
         <SpeakerGrid speakers={speakers} />
       </SectionContainer>
@@ -94,13 +94,13 @@ export default function SinglePageHome() {
 
       <GradientDivider />
 
-      {/* 06. Rewards & Perks — ₹3,00,000+ Prize Pool */}
+      {/* 06. Rewards & Perks — ₹1,50,000 Prize Pool */}
       <SectionContainer id="prizes">
         <SectionHeading
           number="06"
           overline="Rewards & Perks"
-          title="₹3,00,000+ Prize Pool"
-          subtitle="Cash rewards, internship opportunities, incubation access, and goodies for all teams"
+          title="₹1,50,000 Prize Pool"
+          subtitle="3 Track Winners (₹35,000 each) + 3 Runners-Up (₹15,000 each) + 2 Special Recognition Awards with exclusive goodies"
         />
         <PrizePodium prizePool={prizePool} />
       </SectionContainer>
@@ -112,8 +112,8 @@ export default function SinglePageHome() {
         <SectionHeading
           number="07"
           overline="Challenges"
-          title="Problem Statements"
-          subtitle="Released on the day of the hackathon — stay tuned!"
+          title="18 Problem Statements"
+          subtitle="3 tracks × 6 problem statements each — domains to be finalized, released on hackathon day"
         />
         <ProblemStatementsBlock />
       </SectionContainer>
@@ -139,7 +139,7 @@ export default function SinglePageHome() {
           number="09"
           overline="Organizers"
           title="Meet the Team"
-          subtitle="The student leads and faculty advisors behind CSI Club's flagship hackathon"
+          subtitle="The student leads and faculty advisors behind CSI Student Chapter's flagship hackathon"
         />
         <div className="w-full space-y-12">
           <div>
@@ -205,7 +205,7 @@ export default function SinglePageHome() {
             <SectionHeading
               overline="Ready to Build?"
               title="Join Hack the Cube 2026"
-              subtitle="Registration spots are limited. Secure your spot now and compete for ₹3,00,000+ in prizes."
+              subtitle="Registration spots are limited. Secure your spot now and compete for ₹1,50,000 in prizes across 3 technical tracks."
             />
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
               <Link href="/register" className="btn-primary text-lg px-10 py-4">

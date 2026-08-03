@@ -28,7 +28,7 @@ export const speakers: Speaker[] = [
     name: "Harshal Andhale",
     photoUrl: "/images/speakers/harshal andhale.jpg",
     designation: "Tech Lead, CSI",
-    company: "CSI Club",
+    company: "CSI Student Chapter",
     bio: "Most humble developer and good human, leading technical architecture, full-stack infrastructure, and community engineering.",
     sessionTopic: "Building High-Impact Scalable Products",
     links: { linkedin: "https://linkedin.com" },

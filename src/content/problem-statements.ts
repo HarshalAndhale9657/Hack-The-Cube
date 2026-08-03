@@ -1,55 +1,135 @@
 import type { ProblemStatement } from "@/content/schemas";
 
 export const problemStatements: ProblemStatement[] = [
+  // ── Track 1 (Domain To Be Finalized) ──
   {
-    id: "ps-1",
-    category: "AI / ML",
-    title: "Autonomous Agent Workflow Orchestration",
-    description:
-      "Design a lightweight, localized multi-agent orchestrator capable of parsing multi-step natural language commands and safely executing system operations with full rollback capabilities.",
-    difficulty: "Advanced",
-    sponsoredBy: "Title Sponsor",
-    rules: [
-      "Must operate with zero external API dependencies for base tasks.",
-      "Must include structured JSON logging of all agent tool invocations.",
-    ],
-  },
-  {
-    id: "ps-2",
-    category: "FinTech",
-    title: "Real-time Fraud & Anomaly Detection in Micro-transactions",
-    description:
-      "Build a low-latency fraud detection system analyzing streaming transaction data to flag suspicious patterns under 50ms response times.",
+    id: "ps-t1-1",
+    category: "Track 1",
+    title: "Problem Statement 1",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
     difficulty: "Intermediate",
-    sponsoredBy: "Platinum Sponsor",
-    rules: [
-      "Simulated throughput of at least 1,000 requests/sec.",
-      "Visual dashboard for live alert metrics.",
-    ],
   },
   {
-    id: "ps-3",
-    category: "Cybersecurity",
-    title: "Zero-Trust API Gateway & Policy Engine",
-    description:
-      "Develop a dynamic reverse proxy gateway enforcing granular cryptographic request verification, IP throttling, and automated threat blocking.",
+    id: "ps-t1-2",
+    category: "Track 1",
+    title: "Problem Statement 2",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t1-3",
+    category: "Track 1",
+    title: "Problem Statement 3",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
     difficulty: "Advanced",
-    sponsoredBy: "Gold Sponsor",
   },
   {
-    id: "ps-4",
-    category: "EdTech & Accessibility",
-    title: "Multilingual Offline Learning Companion",
-    description:
-      "Engineered for low-connectivity regions, an interactive educational portal providing compressed media and speech-to-text translation capabilities.",
+    id: "ps-t1-4",
+    category: "Track 1",
+    title: "Problem Statement 4",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
     difficulty: "Beginner",
   },
   {
-    id: "ps-5",
-    category: "Open Innovation",
-    title: "Smart Campus Energy & Resource Management",
-    description:
-      "IoT data ingestion platform monitoring real-time campus utility consumption with predictive maintenance alerts.",
+    id: "ps-t1-5",
+    category: "Track 1",
+    title: "Problem Statement 5",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
     difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t1-6",
+    category: "Track 1",
+    title: "Problem Statement 6",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Advanced",
+  },
+
+  // ── Track 2 (Domain To Be Finalized) ──
+  {
+    id: "ps-t2-1",
+    category: "Track 2",
+    title: "Problem Statement 1",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t2-2",
+    category: "Track 2",
+    title: "Problem Statement 2",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Beginner",
+  },
+  {
+    id: "ps-t2-3",
+    category: "Track 2",
+    title: "Problem Statement 3",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Advanced",
+  },
+  {
+    id: "ps-t2-4",
+    category: "Track 2",
+    title: "Problem Statement 4",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t2-5",
+    category: "Track 2",
+    title: "Problem Statement 5",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t2-6",
+    category: "Track 2",
+    title: "Problem Statement 6",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Advanced",
+  },
+
+  // ── Track 3 (Domain To Be Finalized) ──
+  {
+    id: "ps-t3-1",
+    category: "Track 3",
+    title: "Problem Statement 1",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Beginner",
+  },
+  {
+    id: "ps-t3-2",
+    category: "Track 3",
+    title: "Problem Statement 2",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t3-3",
+    category: "Track 3",
+    title: "Problem Statement 3",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Advanced",
+  },
+  {
+    id: "ps-t3-4",
+    category: "Track 3",
+    title: "Problem Statement 4",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t3-5",
+    category: "Track 3",
+    title: "Problem Statement 5",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Intermediate",
+  },
+  {
+    id: "ps-t3-6",
+    category: "Track 3",
+    title: "Problem Statement 6",
+    description: "Real-world challenge spanning sectors like FinTech, Healthcare, Education, Social Media, Agriculture, or Smart Cities. Full details will be released on the day of the hackathon.",
+    difficulty: "Advanced",
   },
 ];

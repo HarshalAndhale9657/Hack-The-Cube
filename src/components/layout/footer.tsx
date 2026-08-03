@@ -222,7 +222,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/5 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-caption text-gray-500">
-            © {new Date().getFullYear()} Hack the Cube 2026. Built by CSI Club.
+            © {new Date().getFullYear()} Hack the Cube 2026. CSI Student Chapter, DIT Pimpri, Pune.
           </p>
           <p className="text-caption text-gray-500">
             All rights reserved.

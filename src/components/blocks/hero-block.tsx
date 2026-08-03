@@ -75,7 +75,7 @@ export function HeroBlock() {
             className="text-overline text-orange-500 font-mono tracking-widest inline-flex items-center gap-2"
           >
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            01 / CSI Club Presents
+            01 / CSI Student Chapter Presents
           </motion.span>
 
           {/* Large Bold Headline */}
@@ -97,8 +97,8 @@ export function HeroBlock() {
             className="text-body-lg text-gray-300 w-full max-w-xl"
             style={{ lineHeight: 1.7 }}
           >
-            {siteConfig.tagline}. A premier 24-hour national-level hackathon featuring
-            a Technical Talk Show, industry speakers, and massive prizes.
+            {siteConfig.tagline}. A 24-hour national-level hackathon at DIT Pimpri, Pune
+            featuring interactive podcast sessions, alumni mentorship, and ₹1,50,000 in prizes.
           </motion.p>
 
           {/* Date & Venue Info */}
@@ -115,7 +115,7 @@ export function HeroBlock() {
             <span className="w-1 h-1 rounded-full bg-gray-700 hidden md:block" />
             <span className="flex items-center gap-1.5">
               <MapPin size={16} className="text-orange-500" />
-              Main Campus, CSI Institute
+              DIT Pimpri, Pune
             </span>
           </motion.div>
 
