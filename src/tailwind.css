@@ -1274,10 +1274,10 @@
     }
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
-  .via-bg-surface-1\/80 {
-    --tw-gradient-via: color-mix(in srgb, #1A1A1A 80%, transparent);
+  .via-bg-surface-1\/70 {
+    --tw-gradient-via: color-mix(in srgb, #1A1A1A 70%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
-      --tw-gradient-via: color-mix(in oklab, var(--color-bg-surface-1) 80%, transparent);
+      --tw-gradient-via: color-mix(in oklab, var(--color-bg-surface-1) 70%, transparent);
     }
     --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
     --tw-gradient-stops: var(--tw-gradient-via-stops);
@@ -1720,9 +1720,6 @@
   .opacity-15 {
     opacity: 15%;
   }
-  .opacity-20 {
-    opacity: 20%;
-  }
   .opacity-25 {
     opacity: 25%;
   }
@@ -1731,6 +1728,9 @@
   }
   .opacity-50 {
     opacity: 50%;
+  }
+  .opacity-75 {
+    opacity: 75%;
   }
   .opacity-80 {
     opacity: 80%;
@@ -1890,18 +1890,14 @@
     .group-hover\:text-orange-500:is(:where(.group):hover *) {
       color: var(--color-orange-500);
     }
-    .group-hover\:opacity-40:is(:where(.group):hover *) {
-      opacity: 40%;
-    }
     .group-hover\:opacity-60:is(:where(.group):hover *) {
       opacity: 60%;
     }
+    .group-hover\:opacity-95:is(:where(.group):hover *) {
+      opacity: 95%;
+    }
     .group-hover\:opacity-100:is(:where(.group):hover *) {
       opacity: 100%;
-    }
-    .group-hover\:grayscale-0:is(:where(.group):hover *) {
-      --tw-grayscale: grayscale(0%);
-      filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
     }
     .group-hover\/btn\:translate-x-1:is(:where(.group\/btn):hover *) {
       --tw-translate-x: var(--spacing);

@@ -17,21 +17,21 @@ const tracks: TrackCard[] = [
     number: "01",
     title: "Track 1 — Domain To Be Announced",
     description: "6 real-world problem statements spanning sectors like FinTech, Healthcare, Education, and more. Evaluated by a dedicated 4-judge panel.",
-    image: "/images/placeholder.png",
+    image: "/images/domains/fintech-web3.png",
   },
   {
     id: "track-2",
     number: "02",
     title: "Track 2 — Domain To Be Announced",
     description: "6 real-world problem statements spanning sectors like Social Media, Agriculture, Smart Cities, and more. Evaluated by a dedicated 4-judge panel.",
-    image: "/images/placeholder.png",
+    image: "/images/domains/ai-robotics.png",
   },
   {
     id: "track-3",
     number: "03",
     title: "Track 3 — Domain To Be Announced",
     description: "6 real-world problem statements spanning emerging technology domains. Evaluated by a dedicated 4-judge panel. Winner: ₹35,000 | Runner-Up: ₹15,000.",
-    image: "/images/placeholder.png",
+    image: "/images/domains/cloud-cybersecurity.png",
   },
 ];
 
@@ -47,7 +47,7 @@ export function IndustryCarousel() {
                 src={track.image}
                 alt={track.title}
                 fill
-                className="object-cover opacity-20 grayscale group-hover:grayscale-0 group-hover:scale-105 group-hover:opacity-40 transition-all duration-500 ease-out"
+                className="object-cover opacity-75 group-hover:opacity-95 group-hover:scale-105 transition-all duration-500 ease-out"
                 sizes="360px"
               />
             </div>
@@ -56,7 +56,7 @@ export function IndustryCarousel() {
             <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none" />
 
             {/* Dark Gradient Overlay for optimal legibility */}
-            <div className="absolute inset-0 bg-gradient-to-t from-bg-void via-bg-surface-1/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-bg-void via-bg-surface-1/70 to-transparent" />
 
             {/* Card Content Overlay */}
             <div className="relative z-10 h-full p-7 sm:p-9 flex flex-col justify-between">
