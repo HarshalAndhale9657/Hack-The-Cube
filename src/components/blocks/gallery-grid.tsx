@@ -18,7 +18,7 @@ interface GalleryImage {
 const realGalleryImages: GalleryImage[] = [
   {
     id: "g1",
-    url: "/images/gallery/8222aa62-8563-459f-ba0d-a346af419a0b.jpg",
+    url: "/images/gallery/IMG_5496.jpg",
     title: "Keynote & Inauguration",
     alt: "Hack the Cube Event Highlights & Keynote",
     width: 600,
@@ -58,7 +58,7 @@ const realGalleryImages: GalleryImage[] = [
   },
   {
     id: "g6",
-    url: "/images/gallery/87ff7425-f93d-4d17-94dc-5c997d7f2446.jpg",
+    url: "/images/gallery/IMG_5504.jpg",
     title: "Prize Ceremony & Celebration",
     alt: "Winner Announcements & Award Ceremony",
     width: 600,
