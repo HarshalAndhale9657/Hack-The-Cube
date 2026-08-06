@@ -152,37 +152,55 @@ export function Navbar() {
                     <AnimatePresence>
                       {activeDropdown === item.label && (
                         <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                          initial={{ opacity: 0, y: 10, scale: 0.97 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                          className="absolute top-full left-0 mt-1 w-80 p-3 rounded-2xl glass-panel bg-bg-surface-2/95 backdrop-blur-xl border border-white/10 shadow-2xl z-50"
+                          exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                          transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+                          className="absolute top-full left-0 mt-2 w-84 sm:w-90 p-2.5 rounded-[20px] bg-[#0A0D14]/95 backdrop-blur-2xl border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),_0_0_20px_rgba(249,115,22,0.08)] z-50 overflow-hidden before:absolute before:-top-4 before:left-0 before:right-0 before:h-4 before:content-['']"
                         >
+                          {/* Subtle top ambient glow line */}
+                          <div className="absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-orange-500/40 to-transparent pointer-events-none" />
+
                           <div className="space-y-1">
-                            {item.subItems?.map((sub) => (
-                              <a
-                                key={sub.label}
-                                href={sub.href}
-                                onClick={(e) => handleNavClick(e, sub.href)}
-                                className={cn(
-                                  "block p-3 rounded-xl transition-all group/sub",
-                                  activeSection === sub.href
-                                    ? "bg-orange-500/15 border border-orange-500/30"
-                                    : "hover:bg-white/5 border border-transparent"
-                                )}
-                              >
-                                <div className="text-sm font-semibold text-gray-050 group-hover/sub:text-orange-500 transition-colors flex items-center justify-between">
-                                  {sub.label}
-                                  <ArrowRight
-                                    size={12}
-                                    className="opacity-0 -translate-x-1 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all text-orange-500"
-                                  />
-                                </div>
-                                <p className="text-caption text-gray-400 mt-0.5 line-clamp-1">
-                                  {sub.description}
-                                </p>
-                              </a>
-                            ))}
+                            {item.subItems?.map((sub) => {
+                              const isSubActive = activeSection === sub.href;
+                              return (
+                                <a
+                                  key={sub.label}
+                                  href={sub.href}
+                                  onClick={(e) => handleNavClick(e, sub.href)}
+                                  className={cn(
+                                    "relative block p-3 rounded-xl transition-all duration-200 group/sub border",
+                                    isSubActive
+                                      ? "bg-orange-500/15 border-orange-500/30 shadow-[inset_0_1px_0_0_rgba(249,115,22,0.2)]"
+                                      : "hover:bg-white/[0.06] border-transparent hover:border-white/5"
+                                  )}
+                                >
+                                  <div className="flex items-center justify-between gap-2">
+                                    <div className="flex items-center gap-2">
+                                      <span
+                                        className={cn(
+                                          "w-1.5 h-1.5 rounded-full transition-all duration-200 shrink-0",
+                                          isSubActive
+                                            ? "bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]"
+                                            : "bg-orange-500/40 group-hover/sub:bg-orange-500 group-hover/sub:scale-125"
+                                        )}
+                                      />
+                                      <span className="text-sm font-semibold text-gray-100 group-hover/sub:text-orange-400 transition-colors">
+                                        {sub.label}
+                                      </span>
+                                    </div>
+                                    <ArrowRight
+                                      size={14}
+                                      className="opacity-0 -translate-x-1.5 group-hover/sub:opacity-100 group-hover/sub:translate-x-0 transition-all duration-200 text-orange-400 shrink-0"
+                                    />
+                                  </div>
+                                  <p className="text-xs text-gray-400 group-hover/sub:text-gray-300 transition-colors leading-relaxed mt-1 pl-3.5">
+                                    {sub.description}
+                                  </p>
+                                </a>
+                              );
+                            })}
                           </div>
                         </motion.div>
                       )}
