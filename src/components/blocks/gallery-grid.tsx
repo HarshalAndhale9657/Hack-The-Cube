@@ -158,68 +158,100 @@ export function GalleryGrid({ images = realGalleryImages }: GalleryGridProps) {
           <div className="w-full grid lg:grid-cols-12 gap-8 items-center max-w-[1400px] mx-auto px-6 sm:px-10">
 
             {/* Left: heading + active photo info */}
-            <div className="lg:col-span-5 space-y-6 z-20">
+            <div className="lg:col-span-5 flex flex-col justify-center space-y-6 z-20 pr-0 lg:pr-4">
               <SectionHeading
                 number="12"
                 overline="Highlights"
                 title="Last Year's Memories"
                 subtitle="Relive moments, teamwork, and celebrations from previous CSI Student Chapter events"
-                className="mb-4 text-left"
+                className="mb-2 text-left"
               />
 
-              <div className="space-y-3 pt-2 border-t border-white/10">
-                <span className="text-overline text-orange-500 font-mono tracking-widest block">
-                  HIGHLIGHT 0{activeIndex + 1} / 0{displayImages.length}
-                </span>
-                <h3 className="text-heading-1 text-gray-050 font-display transition-all duration-300">
-                  {activeImage.title}
-                </h3>
-                <p className="text-body text-gray-300 leading-relaxed font-normal transition-all duration-300">
-                  {activeImage.alt}
-                </p>
+              {/* Active photo info box - aligned glass card container */}
+              <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] p-6 sm:p-7 border border-white/10 backdrop-blur-md shadow-xl transition-all duration-300">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeImage.id}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="space-y-3 min-h-[120px] flex flex-col justify-center"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-overline text-orange-500 font-mono tracking-widest block text-xs">
+                        HIGHLIGHT 0{activeIndex + 1} / 0{displayImages.length}
+                      </span>
+                      <span className="h-1.5 w-1.5 rounded-full bg-orange-500 animate-pulse" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-gray-050 font-display tracking-tight leading-snug">
+                      {activeImage.title}
+                    </h3>
+                    <p className="text-body text-gray-300 leading-relaxed font-normal text-sm sm:text-base">
+                      {activeImage.alt}
+                    </p>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
-              <div className="pt-2 flex items-center gap-3">
+              {/* Action button & progress dots row */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-1">
                 <button
                   onClick={() => setSelectedImage(activeImage)}
-                  className="inline-flex items-center gap-2 text-sm font-mono font-semibold text-orange-400 hover:text-orange-300 transition-colors group/btn cursor-pointer"
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono font-semibold text-orange-400 hover:text-orange-300 transition-colors group/btn cursor-pointer"
                 >
                   <span>VIEW FULL RESOLUTION</span>
                   <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                 </button>
-              </div>
 
-              {/* Progress dots */}
-              <div className="flex items-center gap-2 pt-2">
-                {displayImages.map((_, i) => (
-                  <span
-                    key={i}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      i === activeIndex ? "w-8 bg-orange-500" : "w-1.5 bg-white/20"
-                    }`}
-                  />
-                ))}
+                {/* Clickable progress dots */}
+                <div className="flex items-center gap-2">
+                  {displayImages.map((img, i) => (
+                    <button
+                      key={img.id}
+                      onClick={() => {
+                        setActiveIndex(i);
+                        if (isDesktop && sectionRef.current) {
+                          const sectionTop = sectionRef.current.offsetTop;
+                          const targetScroll = sectionTop + (i / Math.max(1, displayImages.length - 1)) * scrollDist;
+                          window.scrollTo({ top: targetScroll, behavior: "smooth" });
+                        }
+                      }}
+                      aria-label={`Go to highlight ${i + 1}`}
+                      className={`h-2 rounded-full transition-all duration-300 cursor-pointer focus:outline-none ${
+                        i === activeIndex ? "w-8 bg-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.6)]" : "w-2 bg-white/20 hover:bg-white/40"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Right: horizontal photo rail */}
-            <div ref={viewportRef} className="lg:col-span-7 overflow-x-auto lg:overflow-hidden py-4 scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div ref={viewportRef} className="lg:col-span-7 overflow-x-auto lg:overflow-visible py-8 scrollbar-none [-ms-overflow-style:none] [scrollbar-width:none]">
               <motion.div
                 ref={railRef}
                 style={{ x: isDesktop ? x : undefined }}
-                className="flex items-center gap-5 sm:gap-6 lg:gap-8 w-max will-change-transform"
+                className="flex items-center gap-6 sm:gap-8 lg:gap-10 w-max will-change-transform py-4"
               >
                 {displayImages.map((image, index) => {
                   const isActive = index === activeIndex;
+                  const distFromActive = Math.abs(index - activeIndex);
                   return (
                     <motion.div
                       key={image.id}
                       animate={{
-                        scale: isActive ? 1.02 : 0.92,
-                        opacity: isActive ? 1 : 0.55,
+                        scale: isActive ? 1.10 : 0.90,
+                        y: isActive ? -12 : 0,
+                        opacity: isActive ? 1 : 0.50,
+                        zIndex: isActive ? 30 : Math.max(1, 20 - distFromActive),
                       }}
-                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="shrink-0 group/card relative rounded-3xl overflow-hidden cursor-pointer border border-white/10 hover:border-orange-500/50 shadow-2xl transition-all duration-500 bg-navy-900"
+                      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                      className={`shrink-0 group/card relative rounded-3xl overflow-hidden cursor-pointer border transition-all duration-500 bg-navy-900 ${
+                        isActive
+                          ? "border-orange-500/60 shadow-[0_25px_60px_-15px_rgba(249,115,22,0.35)] ring-1 ring-orange-500/30"
+                          : "border-white/10 hover:border-orange-500/30 shadow-xl"
+                      }`}
                       style={{
                         width: "clamp(290px, 42vw, 520px)",
                         height: "clamp(340px, 52vh, 460px)",
@@ -248,7 +280,11 @@ export function GalleryGrid({ images = realGalleryImages }: GalleryGridProps) {
                             {image.title}
                           </h4>
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-black/40 border border-white/20 backdrop-blur-md text-white flex items-center justify-center group-hover/card:bg-orange-500 group-hover/card:border-orange-400 transition-colors">
+                        <div className={`w-10 h-10 rounded-full border backdrop-blur-md text-white flex items-center justify-center transition-all duration-300 ${
+                          isActive
+                            ? "bg-orange-500 border-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.5)]"
+                            : "bg-black/40 border-white/20 group-hover/card:bg-orange-500 group-hover/card:border-orange-400"
+                        }`}>
                           <Maximize2 size={16} />
                         </div>
                       </div>
