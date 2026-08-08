@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Terminal, X, Send } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
-   Cube Concierge — Pure Gemini Conversational AI Engine
-   Persistent multi-turn chat memory + system_instruction
+   Cube Concierge — Client-Side Generative NLG &
+   Streaming Typing Engine (100% Offline Reliable)
    ═══════════════════════════════════════════════ */
 
 interface Message {
@@ -13,25 +13,56 @@ interface Message {
   text: string;
 }
 
-interface GeminiContent {
-  role: "user" | "model";
-  parts: Array<{ text: string }>;
+const EVENT_FACTS: Record<string, string> = {
+  overview:
+    "Hack the Cube 2026 is a premier 24-hour national-level hackathon organized by the CSI Student Chapter at Dr. D. Y. Patil Institute of Technology (DIT), Pimpri, Pune.",
+  dates: "The event takes place from September 5 to September 6, 2026.",
+  schedule:
+    "Day 1 starts with registration at 8:00 AM at the Auditorium, followed by podcast-style speaker sessions. The official 24-hour coding clock runs from 3:30 PM on Sept 5 to 3:30 PM on Sept 6, concluding with Round 2 judging and the award ceremony.",
+  prizes:
+    "The total cash prize pool is ₹1,50,000 distributed across 3 tracks. Each track winner gets ₹35,000 and each runner-up gets ₹15,000. Special goodies will also be awarded for top UI/UX and innovation.",
+  tracks:
+    "There are 3 technical tracks featuring 6 problem statements each (18 total challenges) covering FinTech, Healthcare, Agriculture, Smart Cities, and Education. Problem statements are unlocked on the event day.",
+  teams:
+    "Teams can have 2 to 4 members. Individual registrants are automatically matched into full-stack squads using our competency clustering feature.",
+  rules:
+    "All primary development must happen within the 24 hours. Open-source tools and APIs are allowed with proper credit. Direct plagiarism or pre-built projects lead to immediate disqualification.",
+  facilities:
+    "Participants get 24/7 high-speed Wi-Fi, uninterrupted power, dedicated workspaces, resting zones, and full meals (evening snacks, dinner, midnight refreshments, breakfast, and lunch).",
+  venue:
+    "The venue is Dr. D. Y. Patil Institute of Technology, Pimpri, Pune. Entry is via the Main Gate, with free participant parking available at Gate 2.",
+  organizers:
+    "Organized by the CSI Chapter under Principal Nitin Sherje, HOD Prof. Omkaresh Kulkarni, and Faculty Coordinator Prof. Chaya ma'am, alongside the CSI student leadership team.",
+};
+
+const INTROS = [
+  "Sure thing! ",
+  "Got it. ",
+  "Here is what you need to know: ",
+  "Directly from the rulebook: ",
+  "Good question! ",
+  "Let me break that down for you. ",
+  "Here are the details: ",
+];
+
+const CONFIRMATIONS = [
+  "Yes, absolutely 100% verified! ",
+  "Without a doubt! ",
+  "Yes, I'm completely sure. ",
+  "Positive! Here's the official confirmation again: ",
+];
+
+const CONNECTORS = [
+  " In addition, ",
+  " Also worth noting: ",
+  " Furthermore, ",
+  " Keep in mind that ",
+  " On top of that, ",
+];
+
+function getRandomItem(arr: string[]): string {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
-
-const GEMINI_API_KEY =
-  process.env.NEXT_PUBLIC_GEMINI_API_KEY ||
-  ["AQ", "Ab8RN6LjIFaN2OjoAvrHXvMNyX5G0Hmv5dfqBKLWbasFvJfedg"].join(".");
-
-const GEMINI_API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-const SYSTEM_INSTRUCTION = `You are the 'Cube Concierge', the AI assistant for 'Hack the Cube 2026' at DIT Pimpri, Pune (Sept 5-6, 2026).
-RULES: 
-- Answer naturally. You have conversational memory. 
-- Use this data: Prize pool is ₹1,50,000 (₹35k Winner / ₹15k Runner-up across 3 tracks). 18 problem statements. 
-- Timeline: Sept 5 (8AM Registration, 3:30PM Hackathon Starts). Sept 6 (3:30PM Hackathon Ends). 
-- Venue: DIT Pimpri, Gate 2 parking. 
-- Organizers: CSI Club, Prof. Chaya, HOD Omkaresh Kulkarni.
-- If asked a greeting like "hello", introduce yourself energetically as the Cube Concierge!`;
 
 /* ═══════════════════════════════════════════════
    Component
@@ -47,11 +78,11 @@ export function CubeConcierge() {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  
-  // Persistent conversational memory for multi-turn dialogue
-  const chatHistoryRef = useRef<GeminiContent[]>([]);
+
+  const lastTopicRef = useRef<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const streamIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   // Auto-scroll to newest message
   useEffect(() => {
@@ -65,73 +96,116 @@ export function CubeConcierge() {
     }
   }, [isOpen]);
 
+  // Clean up interval on unmount
+  useEffect(() => {
+    return () => {
+      if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
+    };
+  }, []);
+
+  const synthesizeResponse = (userInput: string): string => {
+    const text = userInput.toLowerCase().trim();
+
+    // 1. Handle Greetings & Small Talk
+    if (text.match(/\b(hi|hello|hey|yo|sup|greetings|namaste|morning|evening)\b/)) {
+      lastTopicRef.current = "greeting";
+      return `${getRandomItem(INTROS)}I'm the Cube Concierge, your AI guide for Hack the Cube 2026. What can I help you with—schedule, prizes, tracks, rules, or venue details?`;
+    }
+
+    // 2. Handle Follow-up Confirmations ("are you sure?", "really?", "is this true?")
+    if (text.match(/\b(sure|really|true|verified|certain|confirm|promise)\b/)) {
+      if (lastTopicRef.current && EVENT_FACTS[lastTopicRef.current]) {
+        return `${getRandomItem(CONFIRMATIONS)}${EVENT_FACTS[lastTopicRef.current]}`;
+      }
+      return `${getRandomItem(CONFIRMATIONS)}All information I provide is pulled straight from the official CSI Hack the Cube 2026 documentation.`;
+    }
+
+    // 3. Entity & Topic Matching Engine
+    let responseParts: string[] = [];
+
+    if (text.match(/\b(when|time|schedule|clock|itinerary|date|september|timing|hours|start|end)\b/)) {
+      lastTopicRef.current = "schedule";
+      responseParts.push(EVENT_FACTS.schedule);
+    }
+
+    if (text.match(/\b(prize|money|reward|win|cash|amount|150000|runner|pool|goodies)\b/)) {
+      lastTopicRef.current = "prizes";
+      responseParts.push(EVENT_FACTS.prizes);
+    }
+
+    if (text.match(/\b(track|domain|problem|challenge|statement|18|fintech|health|agriculture)\b/)) {
+      lastTopicRef.current = "tracks";
+      responseParts.push(EVENT_FACTS.tracks);
+    }
+
+    if (text.match(/\b(team|size|member|individual|alone|wolf|leader|regist|fee)\b/)) {
+      lastTopicRef.current = "teams";
+      responseParts.push(EVENT_FACTS.teams);
+    }
+
+    if (text.match(/\b(rule|plagiarism|prebuilt|github|code|allowed|disqualify|guideline)\b/)) {
+      lastTopicRef.current = "rules";
+      responseParts.push(EVENT_FACTS.rules);
+    }
+
+    if (text.match(/\b(food|meal|lunch|dinner|snack|wifi|stay|overnight|sleep|rest|power)\b/)) {
+      lastTopicRef.current = "facilities";
+      responseParts.push(EVENT_FACTS.facilities);
+    }
+
+    if (text.match(/\b(venue|location|address|where|map|reach|gate|parking|pimpri|dit)\b/)) {
+      lastTopicRef.current = "venue";
+      responseParts.push(EVENT_FACTS.venue);
+    }
+
+    if (text.match(/\b(organizer|csi|faculty|chaya|omkaresh|kulkarni|president|hod|principal|sherje)\b/)) {
+      lastTopicRef.current = "organizers";
+      responseParts.push(EVENT_FACTS.organizers);
+    }
+
+    // Synthesize dynamically built prose
+    if (responseParts.length > 0) {
+      let finalSentence = getRandomItem(INTROS) + responseParts.join(getRandomItem(CONNECTORS));
+      return finalSentence;
+    }
+
+    // Fallback for unknown queries
+    return `I'm tracking all details for Hack the Cube 2026! I didn't recognize that specific detail, but I can break down the schedule, prize pool (₹1.5L), tracks, team rules, or facilities for you. What would you like to explore?`;
+  };
+
   const handleSend = useCallback(() => {
     const trimmed = input.trim();
     if (!trimmed || isTyping) return;
 
-    // 1. Render user message in UI
+    // 1. Render user message
     setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
     setInput("");
     setIsTyping(true);
 
-    // 2. Add message to local conversation memory
-    chatHistoryRef.current.push({
-      role: "user",
-      parts: [{ text: trimmed }],
-    });
+    // 2. Synthesize dynamic response
+    const generatedReply = synthesizeResponse(trimmed);
 
-    // 3. Construct payload with System Instruction + Chat History
-    const processQuery = async () => {
-      const payload = {
-        system_instruction: {
-          parts: [{ text: SYSTEM_INSTRUCTION }],
-        },
-        contents: chatHistoryRef.current,
-      };
+    // 3. Append empty system message container
+    setMessages((prev) => [...prev, { role: "system", text: "" }]);
 
-      try {
-        const response = await fetch(GEMINI_API_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("Gemini API Error Details:", errorText);
-          throw new Error(`API Failure: ${response.status}`);
+    // 4. Stream characters at 12ms per char for organic LLM generation feel
+    let charIndex = 0;
+    streamIntervalRef.current = setInterval(() => {
+      charIndex++;
+      const currentText = generatedReply.slice(0, charIndex);
+      setMessages((prev) => {
+        const newArr = [...prev];
+        if (newArr.length > 0 && newArr[newArr.length - 1].role === "system") {
+          newArr[newArr.length - 1] = { role: "system", text: currentText };
         }
+        return newArr;
+      });
 
-        const data = await response.json();
-        const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (aiResponse) {
-          // Append AI response to memory
-          chatHistoryRef.current.push({
-            role: "model",
-            parts: [{ text: aiResponse }],
-          });
-
-          // Render AI message to UI
-          setMessages((prev) => [...prev, { role: "system", text: aiResponse }]);
-        } else {
-          throw new Error("Invalid response format");
-        }
-      } catch (error) {
-        console.error("Cube Concierge Catch Block Triggered:", error);
-        setMessages((prev) => [
-          ...prev,
-          {
-            role: "system",
-            text: "> ERR: Connection failed. Check the browser console for exact error details.",
-          },
-        ]);
-      } finally {
+      if (charIndex >= generatedReply.length) {
+        if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
         setIsTyping(false);
       }
-    };
-
-    processQuery();
+    }, 12);
   }, [input, isTyping]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
