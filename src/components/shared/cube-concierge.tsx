@@ -42,15 +42,15 @@ const KNOWLEDGE_MATRIX: KnowledgeItem[] = [
   // --- DATES, TIMING & INAUGURATION ---
   {
     intent: "exact_dates",
-    phrases: ["what is the date", "what days", "hackathon dates", "when is the hackathon"],
-    keywords: ["date", "dates", "september", "days"],
+    phrases: ["what is the date", "what days", "hackathon dates", "when is the hackathon", "when will it conduct", "when will be the hackathon will conduct"],
+    keywords: ["date", "dates", "september", "days", "conduct", "conducted", "happen", "held"],
     response: "Hack the Cube 2026 takes place over two days: September 5th and September 6th, 2026."
   },
   {
     intent: "start_time",
-    phrases: ["when does it start", "what time does the coding start", "when is the clock starting"],
-    keywords: ["start", "timing", "clock", "begins"],
-    response: "The official 24-hour coding clock starts exactly at 3:30 PM on September 5th!"
+    phrases: ["when does it start", "what time does the coding start", "when is the clock starting", "what is the schedule", "schedule"],
+    keywords: ["start", "timing", "clock", "begins", "schedule", "itinerary", "time", "when"],
+    response: "The official 24-hour coding clock starts exactly at 3:30 PM on September 5th! Registration begins earlier at 8:00 AM."
   },
   {
     intent: "inauguration",
