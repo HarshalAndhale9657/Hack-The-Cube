@@ -5,7 +5,7 @@ import { Terminal, X, Send } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
    Cube Concierge — Master Offline Intent Engine &
-   Fuzzy Math Algorithm (Levenshtein Distance)
+   Fuzzy Math Algorithm (Strict Regex Word Boundaries)
    ═══════════════════════════════════════════════ */
 
 interface Message {
@@ -27,13 +27,13 @@ interface KnowledgeItem {
 const KNOWLEDGE_MATRIX: KnowledgeItem[] = [
   {
     intent: "greeting",
-    phrases: ["hi", "hello", "hey", "yo", "sup", "greetings", "good morning", "good afternoon", "good evening", "namaste", "who are you", "what is your name", "what can you do"],
+    phrases: ["hi", "hello", "hey", "yo", "sup", "greetings", "good morning", "what is your name", "who are you", "what can you do"],
     keywords: ["hello", "hey", "concierge", "bot", "assistant", "help"],
     response: "Hello! I am the Cube Concierge, your instant assistant for Hack the Cube 2026. Ask me about the schedule, prize money, problem statements, team rules, registration steps, or venue location!"
   },
   {
     intent: "dates_and_time",
-    phrases: ["when is the hackathon", "what is the date", "what days", "hackathon dates", "what is the schedule", "where will the inauguration ceremony will conduct", "when is the inauguration"],
+    phrases: ["when is the hackathon", "what is the date", "what days", "hackathon dates", "what is the schedule", "inauguration ceremony", "when is the inauguration"],
     keywords: ["date", "dates", "when", "time", "timing", "schedule", "itinerary", "clock", "september", "inauguration", "ceremony", "start", "end"],
     response: "Timeline & Inauguration:\n• Sept 5, 8:00 AM: Registration at the Auditorium, followed by the Inauguration Ceremony.\n• Sept 5, 3:30 PM: Official 24-Hour Hackathon Clock Starts!\n• Sept 6, 3:30 PM: Coding Ends.\n• Sept 6, Evening: Award Ceremony."
   },
@@ -46,7 +46,6 @@ const KNOWLEDGE_MATRIX: KnowledgeItem[] = [
   {
     intent: "tracks_and_problems",
     phrases: ["what are the tracks", "how many problem statements", "show problem statements", "what domains", "type of problem statement", "what are the problems"],
-    // NOTE: 'problem' is intentionally removed from keywords here to prevent collisions with tech issues
     keywords: ["track", "tracks", "domain", "domains", "statement", "statements", "challenge", "challenges", "18", "fintech", "healthcare", "agriculture", "smart city", "education"],
     response: "There are 3 Technical Tracks featuring 6 problem statements each (18 total challenges!). Domains include FinTech, Healthcare, Agriculture, Smart Cities, Social Media, and Education. To ensure fairness, exact problem statements will be unlocked on the event day."
   },
@@ -58,14 +57,14 @@ const KNOWLEDGE_MATRIX: KnowledgeItem[] = [
   },
   {
     intent: "food_and_dietary",
-    phrases: ["will food be provided", "veg or non veg", "am vegetarian", "what meals are included", "will we get dinner", "jain food"],
+    phrases: ["will food be provided", "veg or non veg", "am vegetarian", "what meals are included", "will we get dinner", "jain food", "what type of food"],
     keywords: ["food", "meal", "meals", "eat", "veg", "vegetarian", "non-veg", "chicken", "dinner", "lunch", "breakfast", "snacks", "diet", "dietary"],
     response: "Full hospitality is provided throughout the 24 hours!\n• Meals Included: Evening snacks, dinner, midnight refreshments, breakfast, and lunch.\n• Dietary Options: Both Vegetarian and Non-Vegetarian options are available (you specify this during registration)."
   },
   {
     intent: "facilities_and_stay",
-    phrases: ["where will we sleep", "is there overnight stay", "resting facilities", "is wifi provided", "will there be power outlets"],
-    keywords: ["stay", "overnight", "sleep", "rest", "resting", "wifi", "internet", "power", "charging", "plug", "extension", "washroom", "facilities"],
+    phrases: ["where will we sleep", "is there overnight stay", "resting facilities", "is wifi provided", "will there be power outlets", "what type of facilities"],
+    keywords: ["stay", "overnight", "sleep", "rest", "resting", "wifi", "internet", "power", "charging", "plug", "extension", "washroom", "facilities", "facility"],
     response: "We provide complete 24-hour infrastructure support:\n• High-speed Wi-Fi & continuous electricity with backup power.\n• Dedicated team workspaces with extension boards.\n• Designated overnight resting areas and washrooms.\n• First-aid medical support and 24/7 campus security."
   },
   {
@@ -82,9 +81,9 @@ const KNOWLEDGE_MATRIX: KnowledgeItem[] = [
   },
   {
     intent: "technical_issues_and_refunds",
-    phrases: ["my id is not matching", "facing error", "website glitch", "payment failed", "form not working", "problem in registering", "there is a problem", "i want my money back", "can i get a refund"],
-    keywords: ["error", "bug", "glitch", "issue", "problem", "problems", "failed", "matching", "support", "help", "id", "refund", "cancel", "money back", "stuck"],
-    response: "Support & Troubleshooting:\n• Technical Glitches (ID matching, form errors, payment failures): Email hackthecube@csiclub.org with a screenshot so our tech team can resolve it manually.\n• Refunds: Registration fees are generally non-refundable. Contact support for severe medical emergencies."
+    phrases: ["my id is not matching", "facing error", "website glitch", "payment failed", "form not working", "problem in registering", "there is a problem", "i want my money back", "can i get a refund", "accidentally submitted", "made a mistake", "wrong details", "edit form"],
+    keywords: ["error", "bug", "glitch", "issue", "problem", "problems", "failed", "matching", "support", "help", "id", "refund", "cancel", "money back", "stuck", "accidentally", "mistake", "wrong"],
+    response: "Support & Troubleshooting:\n• Technical Glitches (ID matching, accidental submissions, form edits): Email hackthecube@csiclub.org with a screenshot/details so our tech team can resolve it manually.\n• Refunds: Registration fees are generally non-refundable. Contact support for severe emergencies."
   }
 ];
 
@@ -111,9 +110,9 @@ function getEditDistance(a: string, b: string): number {
     for (let j = 1; j <= b.length; j += 1) {
       const indicator = a[i - 1] === b[j - 1] ? 0 : 1;
       matrix[i][j] = Math.min(
-        matrix[i][j - 1] + 1, // insertion
-        matrix[i - 1][j] + 1, // deletion
-        matrix[i - 1][j - 1] + indicator // substitution
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j] + 1,
+        matrix[i - 1][j - 1] + indicator
       );
     }
   }
@@ -133,11 +132,12 @@ function queryMatrix(userInput: string): string {
     .split(/\s+/)
     .filter((t) => t.length > 1);
 
-  // LAYER 1: Exact Phrase Override (Highest Priority)
+  // LAYER 1: Strict Regex Word Boundaries (Prevents "which" from triggering "hi")
   for (const entry of KNOWLEDGE_MATRIX) {
     if (entry.phrases) {
       for (const phrase of entry.phrases) {
-        if (rawText.includes(phrase) || phrase.includes(rawText)) {
+        const strictRegex = new RegExp(`\\b${phrase}\\b`, "i");
+        if (strictRegex.test(rawText)) {
           return entry.response;
         }
       }
@@ -154,13 +154,13 @@ function queryMatrix(userInput: string): string {
     tokens.forEach((token) => {
       entry.keywords.forEach((kw) => {
         if (token === kw) {
-          score += 10; // Exact word match
+          score += 10;
         } else if (token.length > 3 && kw.includes(token)) {
-          score += 5; // Partial word match
+          score += 5;
         } else if (token.length > 4) {
           const distance = getEditDistance(token, kw);
-          if (distance === 1) score += 8; // 1-letter typo (e.g. "scedule")
-          if (distance === 2 && token.length > 6) score += 4; // 2-letter typo on big words
+          if (distance === 1) score += 8;
+          if (distance === 2 && token.length > 6) score += 4;
         }
       });
     });
@@ -171,12 +171,12 @@ function queryMatrix(userInput: string): string {
     }
   }
 
-  // LAYER 3: Threshold Validation
+  // LAYER 3: Threshold
   if (highestScore >= 8 && bestEntry) {
     return (bestEntry as KnowledgeItem).response;
   }
 
-  // LAYER 4: Bulletproof Fallback
+  // LAYER 4: Fallback
   return "I am trained exclusively on the Hack the Cube 2026 rulebook! I didn't quite catch that. You can ask me directly about:\n• Schedule & Inauguration\n• Prize Pool (₹1.5 Lakhs) & 18 Problems\n• Registration Steps & Team Rules\n• Food, Facilities & Venue Location\n• Tech Support or Glitches";
 }
 
