@@ -28,7 +28,7 @@ export function FAQAccordion({ faqs }: FAQAccordionProps) {
   });
 
   return (
-    <div className="w-full space-y-8 max-w-4xl mx-auto">
+    <div className="w-full space-y-8 max-w-4xl mx-auto" style={{ display: "flex", flexDirection: "column", gap: "2rem", overflow: "hidden" }}>
       {/* Search Bar */}
       <div className="relative max-w-md mx-auto">
         <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -83,7 +83,7 @@ export function FAQAccordion({ faqs }: FAQAccordionProps) {
               <div
                 className={cn(
                   "overflow-hidden transition-all duration-300",
-                  openId === faq.id ? "max-h-96 pb-5 px-5 sm:px-6" : "max-h-0"
+                  openId === faq.id ? "max-h-[600px] pb-5 px-5 sm:px-6" : "max-h-0"
                 )}
               >
                 <p className="text-body text-gray-300 border-t border-white/10 pt-4 leading-relaxed">

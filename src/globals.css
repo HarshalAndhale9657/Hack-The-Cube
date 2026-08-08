@@ -545,6 +545,77 @@ label[for*="-year"] {
 }
 
 /* ============================================
+   Global Layout Repairs — Non-Destructive Fixes
+   ============================================ */
+
+/* ── 1. Section-to-Section Separation (Crucial) ── */
+section, .w-full.mx-auto.flex.flex-col.items-center, main > div[id] {
+  padding-top: max(80px, 6rem) !important;
+  padding-bottom: max(80px, 6rem) !important;
+  margin-top: 0 !important;
+}
+#hero {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-top: calc(var(--navbar-h) * -1) !important;
+}
+
+/* ── 2. Banner & Floating Element Flow ── */
+.text-center.bg-white\/5.p-6.sm\:p-8.rounded-3xl,
+.text-center.bg-white\/5.rounded-3xl {
+  position: relative !important;
+  margin-bottom: 40px !important;
+  transform: none !important;
+}
+
+/* ── 3. Card Padding & Text Sizing ── */
+.glass-panel, .bg-white\/5, .bg-navy-900 {
+  padding: max(24px, 1.5rem) !important;
+}
+
+/* ── 4. Flex & Grid Gap Alignment ── */
+/* Convert arbitrary space-y margins to solid flex gaps to prevent overlapping */
+.space-y-16, .space-y-12, .space-y-8 {
+  display: flex !important;
+  flex-direction: column !important;
+  row-gap: 32px !important;
+}
+/* Ensure grid layouts have minimum gaps */
+.grid {
+  gap: 32px !important;
+}
+
+/* ── Scrollbar hide utility (venue tabs, carousels) ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Mobile glass-panel minimum padding ── */
+@media (max-width: 480px) {
+  .glass-panel {
+    padding: 1.5rem !important;
+  }
+}
+
+/* ── Minimum touch/click targets for interactive elements ── */
+button,
+a,
+input,
+select,
+textarea {
+  min-height: 42px;
+}
+
+/* ── Contact form generous field spacing ── */
+form .space-y-4 > * + * {
+  margin-top: 1.25rem;
+}
+
+/* ============================================
    Reduced Motion — WCAG Requirement
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
