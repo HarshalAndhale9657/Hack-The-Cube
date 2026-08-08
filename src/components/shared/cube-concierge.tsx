@@ -392,11 +392,14 @@ export function CubeConcierge() {
             position: "fixed",
             bottom: 92,
             right: 20,
-            backgroundColor: "#2563eb",
+            background: "rgba(15, 15, 15, 0.92)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
             color: "#ffffff",
             padding: "12px 16px",
             borderRadius: 12,
-            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            border: "1px solid rgba(249, 115, 22, 0.5)",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.4), 0 0 15px rgba(249, 115, 22, 0.2)",
             fontSize: 14,
             fontFamily: "sans-serif",
             lineHeight: 1.4,
@@ -406,20 +409,20 @@ export function CubeConcierge() {
             animation: "concierge-bubble-in 0.4s ease forwards",
           }}
         >
-          <strong>Psst! 👋</strong>
+          <strong style={{ color: "#f97316" }}>Psst! 👋</strong>
           <br />
           Want to know how to win the ₹1.5 Lakh prize pool? Ask me!
           {/* Triangle pointer */}
           <div
             style={{
               position: "absolute",
-              bottom: -6,
+              bottom: -7,
               right: 20,
               width: 0,
               height: 0,
-              borderWidth: "6px 6px 0",
+              borderWidth: "7px 7px 0",
               borderStyle: "solid",
-              borderColor: "#2563eb transparent transparent transparent",
+              borderColor: "rgba(15, 15, 15, 0.92) transparent transparent transparent",
             }}
           />
         </div>
