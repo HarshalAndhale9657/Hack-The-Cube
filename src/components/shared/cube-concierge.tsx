@@ -96,7 +96,11 @@ export function CubeConcierge() {
           body: JSON.stringify(payload),
         });
 
-        if (!response.ok) throw new Error("API Failure");
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Gemini API Error Details:", errorText);
+          throw new Error(`API Failure: ${response.status}`);
+        }
 
         const data = await response.json();
         const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -114,12 +118,12 @@ export function CubeConcierge() {
           throw new Error("Invalid response format");
         }
       } catch (error) {
-        console.error("Gemini API Error:", error);
+        console.error("Cube Concierge Catch Block Triggered:", error);
         setMessages((prev) => [
           ...prev,
           {
             role: "system",
-            text: "> ERR: Connection failed. Ensure Gemini API key is valid.",
+            text: "> ERR: Connection failed. Check the browser console for exact error details.",
           },
         ]);
       } finally {
