@@ -459,7 +459,7 @@ export function RegistrationForm() {
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="glass-panel p-8 md:p-12 text-center max-w-[680px] mx-auto"
+        className="glass-panel p-8 sm:p-10 text-center max-w-[550px] mx-auto border border-[#262626] bg-[#0f0f0f] shadow-2xl rounded-2xl"
       >
         {/* Animated success icon */}
         <motion.div
@@ -501,7 +501,7 @@ export function RegistrationForm() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
-          className="glass-panel p-6 mb-8"
+          className="glass-panel p-6 mb-8 border border-[#262626] bg-[#141414] rounded-xl"
         >
           <p className="text-caption text-gray-500 mb-2">
             Your Registration ID
@@ -537,17 +537,17 @@ export function RegistrationForm() {
           </AnimatePresence>
         </motion.div>
 
-        {/* What&apos;s Next */}
+        {/* What's Next */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.55 }}
-          className="glass-panel p-6 text-left mb-8"
+          className="glass-panel p-6 text-left mb-8 border border-[#262626] bg-[#141414] rounded-xl"
         >
           <h3 className="text-heading-3 text-gray-050 mb-3">
             What happens next?
           </h3>
-          <ul className="space-y-2 text-body text-gray-300">
+          <ul className="space-y-2.5 text-body text-gray-300">
             <li className="flex items-start gap-2">
               <span className="text-orange-500 mt-0.5">•</span>
               You&apos;ll receive a confirmation email shortly
@@ -567,7 +567,7 @@ export function RegistrationForm() {
           </ul>
         </motion.div>
 
-        <button onClick={resetForm} className="btn-secondary px-8 py-3">
+        <button onClick={resetForm} className="btn-secondary px-8 py-3 rounded-lg">
           Register Another Team
         </button>
       </motion.div>
@@ -581,12 +581,12 @@ export function RegistrationForm() {
   return (
     <div
       ref={formRef}
-      className="max-w-[680px] mx-auto"
+      className="max-w-[550px] mx-auto"
       onKeyDown={handleKeyDown}
       style={{ scrollMarginTop: "calc(var(--navbar-h) + 2rem)" }}
     >
       {/* Status Badge */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-6">
         <span
           className={cn(
             "px-4 py-1.5 rounded-full text-sm font-semibold",
@@ -611,14 +611,14 @@ export function RegistrationForm() {
           }}
           disabled={isSubmitting}
           className={cn(
-            "glass-panel px-6 py-3 flex items-center gap-2 font-display font-semibold transition-all",
+            "flex-1 glass-panel px-5 py-3.5 flex items-center justify-center gap-2.5 rounded-xl font-display font-semibold transition-all duration-200 border border-[#262626]",
             type === "individual"
-              ? "border-orange-500 text-orange-500 glow-orange-sm"
-              : "text-gray-300 hover:text-gray-050",
+              ? "border-orange-500 text-orange-500 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.2)]"
+              : "bg-[#141414] text-gray-300 hover:text-gray-050 hover:border-white/20",
             isSubmitting && "opacity-50 cursor-not-allowed"
           )}
         >
-          <User size={20} /> Individual
+          <User size={18} /> Individual
         </button>
         <button
           id="reg-type-team"
@@ -632,20 +632,20 @@ export function RegistrationForm() {
           }}
           disabled={isSubmitting}
           className={cn(
-            "glass-panel px-6 py-3 flex items-center gap-2 font-display font-semibold transition-all",
+            "flex-1 glass-panel px-5 py-3.5 flex items-center justify-center gap-2.5 rounded-xl font-display font-semibold transition-all duration-200 border border-[#262626]",
             type === "team"
-              ? "border-orange-500 text-orange-500 glow-orange-sm"
-              : "text-gray-300 hover:text-gray-050",
+              ? "border-orange-500 text-orange-500 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.2)]"
+              : "bg-[#141414] text-gray-300 hover:text-gray-050 hover:border-white/20",
             isSubmitting && "opacity-50 cursor-not-allowed"
           )}
         >
-          <Users size={20} /> Team
+          <Users size={18} /> Team
         </button>
       </div>
 
       {/* Step Indicator */}
       <nav
-        className="flex items-center justify-center gap-2 mb-10"
+        className="flex items-center justify-center gap-2 mb-8"
         aria-label="Registration steps"
       >
         {steps.map((s, i) => (
@@ -725,7 +725,7 @@ export function RegistrationForm() {
           exit={{ opacity: 0, x: -20 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="glass-panel p-6 md:p-8">
+          <div className="glass-panel p-8 sm:p-10 rounded-2xl border border-[#262626] bg-[#0f0f0f] shadow-2xl" style={{ padding: 32, display: "flex", flexDirection: "column" as const, gap: 18 }}>
             {/* ── Step 0 (Team): Team Details ── */}
             {step === 0 && type === "team" && (
               <div className="space-y-6">
@@ -755,7 +755,7 @@ export function RegistrationForm() {
             {/* ── Step 0 (Individual): Your Information ── */}
             {step === 0 && type === "individual" && (
               <div className="space-y-6">
-                <h3 className="text-heading-2 text-gray-050">
+                <h3 className="text-heading-2 text-gray-050 mb-2">
                   Your Information
                 </h3>
                 <MemberForm
@@ -783,9 +783,9 @@ export function RegistrationForm() {
                 </div>
 
                 {members.map((member, i) => (
-                  <div key={i} className="glass-panel p-5 sm:p-6">
+                  <div key={i} className="glass-panel p-6 rounded-xl border border-[#262626] bg-[#141414]">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-overline text-orange-500">
+                      <span className="text-overline text-orange-500 font-bold tracking-wider">
                         {i === 0 ? "Team Leader" : `Member ${i + 1}`}
                       </span>
                       {i > 0 && members.length > minMembers && (
@@ -817,7 +817,7 @@ export function RegistrationForm() {
                     onClick={addMember}
                     disabled={isSubmitting}
                     className={cn(
-                      "w-full glass-panel p-4 flex items-center justify-center gap-2 text-gray-300 hover:text-orange-500 hover:border-orange-500/30 transition-all",
+                      "w-full glass-panel py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 text-gray-300 hover:text-orange-500 hover:border-orange-500/40 border border-[#262626] bg-[#141414] transition-all duration-200 font-medium",
                       isSubmitting && "opacity-50 cursor-not-allowed"
                     )}
                     id="add-member-btn"
@@ -835,10 +835,10 @@ export function RegistrationForm() {
                 <h3 className="text-heading-2 text-gray-050">Preferences</h3>
 
                 <div>
-                  <label className="text-caption text-gray-300 block mb-3">
+                  <label className="text-sm font-medium text-gray-200 block mb-2">
                     T-Shirt Size <span className="text-orange-500">*</span>
                   </label>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2.5">
                     {TSHIRT_SIZES.map((size) => (
                       <button
                         key={size}
@@ -848,10 +848,10 @@ export function RegistrationForm() {
                         }}
                         disabled={isSubmitting}
                         className={cn(
-                          "px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
+                          "px-5 py-3 rounded-lg text-sm font-medium transition-all duration-200",
                           tshirtSize === size
-                            ? "bg-orange-500 text-bg-void shadow-[0_0_12px_rgba(255,127,42,0.35)]"
-                            : "bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10",
+                            ? "bg-orange-500 text-bg-void shadow-[0_0_14px_rgba(255,127,42,0.4)]"
+                            : "bg-[#141414] text-gray-300 hover:bg-white/10 border border-[#334155]",
                           isSubmitting && "opacity-50 cursor-not-allowed"
                         )}
                         id={`tshirt-${size}`}
@@ -897,7 +897,7 @@ export function RegistrationForm() {
                 </h3>
 
                 {/* Summary table */}
-                <div className="space-y-1">
+                <div className="space-y-1 bg-[#141414] p-4 rounded-xl border border-[#262626]">
                   <ReviewRow
                     label="Registration Type"
                     value={
@@ -932,7 +932,7 @@ export function RegistrationForm() {
                 </div>
 
                 {/* Terms checkbox */}
-                <label className="flex items-start gap-3 cursor-pointer group p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
+                <label className="flex items-start gap-3 cursor-pointer group p-4 rounded-xl bg-[#141414] border border-[#262626] hover:border-orange-500/30 transition-colors">
                   <input
                     type="checkbox"
                     checked={agreedToTerms}
@@ -967,15 +967,16 @@ export function RegistrationForm() {
       </AnimatePresence>
 
       {/* ── Navigation Buttons ── */}
-      <div className="flex items-center justify-between mt-6">
+      <div className="flex items-center justify-between mt-6" style={{ marginTop: 20 }}>
         <button
           onClick={goBack}
           disabled={step === 0 || isSubmitting}
           className={cn(
-            "btn-secondary py-3 px-6",
+            "btn-secondary py-3 px-6 rounded-lg font-medium transition-all duration-200",
             (step === 0 || isSubmitting) && "opacity-30 cursor-not-allowed"
           )}
           id="reg-back-btn"
+          style={{ padding: "12px 24px", borderRadius: 8 }}
         >
           <ChevronLeft size={18} /> Back
         </button>
@@ -984,8 +985,9 @@ export function RegistrationForm() {
           <button
             onClick={goNext}
             disabled={isSubmitting}
-            className="btn-primary py-3 px-8"
+            className="btn-primary py-3 px-8 rounded-lg font-medium transition-all duration-200 shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_20px_rgba(249,115,22,0.5)]"
             id="reg-next-btn"
+            style={{ padding: "12px 28px", borderRadius: 8 }}
           >
             Next <ChevronRight size={18} />
           </button>
@@ -994,11 +996,12 @@ export function RegistrationForm() {
             onClick={handleSubmit}
             disabled={!agreedToTerms || isSubmitting || isClosed}
             className={cn(
-              "btn-primary py-3 px-8",
+              "btn-primary py-3.5 px-8 rounded-lg font-semibold transition-all duration-200 shadow-[0_0_18px_rgba(249,115,22,0.35)] hover:shadow-[0_0_25px_rgba(249,115,22,0.55)]",
               (!agreedToTerms || isClosed || isSubmitting) &&
-                "opacity-50 cursor-not-allowed"
+                "opacity-50 cursor-not-allowed shadow-none"
             )}
             id="reg-submit-btn"
+            style={{ padding: "14px 32px", borderRadius: 8, fontWeight: 700, fontSize: "1rem", letterSpacing: "0.02em", marginTop: 8, width: "100%" }}
           >
             {isSubmitting ? (
               <>
@@ -1045,7 +1048,7 @@ function InputField({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-caption text-gray-300 block mb-1.5">
+      <label htmlFor={id} className="text-sm font-medium text-gray-200 block mb-1.5" style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>
         {label} {required && <span className="text-orange-500">*</span>}
       </label>
       <input
@@ -1058,13 +1061,14 @@ function InputField({
         disabled={disabled}
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : undefined}
+        style={{ padding: "12px 16px", width: "100%", borderRadius: 8, boxSizing: "border-box" as const }}
         className={cn(
-          "w-full py-3 px-4 text-sm rounded-lg bg-bg-surface-1 border text-gray-050",
-          "placeholder:text-gray-700 placeholder:opacity-60",
+          "w-full py-3.5 px-4 text-sm rounded-lg bg-[#141414] border border-[#334155] text-gray-050",
+          "placeholder:text-gray-500 placeholder:opacity-70",
           "outline-none transition-all duration-200",
           error
-            ? "border-error/60 focus:border-error focus:shadow-[0_0_0_3px_rgba(255,77,77,0.15)]"
-            : "border-[#333] focus:border-orange-500 focus:shadow-[0_0_0_3px_rgba(255,127,42,0.15)]",
+            ? "border-error focus:border-error focus:ring-2 focus:ring-error/25"
+            : "border-[#334155] focus:border-orange-500 focus:ring-2 focus:ring-orange-500/25",
           disabled && "opacity-50 cursor-not-allowed"
         )}
       />
@@ -1075,7 +1079,7 @@ function InputField({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-1 text-xs text-error flex items-center gap-1 overflow-hidden"
+            className="mt-1.5 text-xs text-error flex items-center gap-1 overflow-hidden font-medium"
             role="alert"
           >
             <AlertCircle size={12} className="shrink-0" /> {error}
@@ -1109,7 +1113,7 @@ function MemberForm({
     touchedFields.has(k(field)) ? fieldErrors[k(field)] : undefined;
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-6 sm:grid-cols-2" style={{ gap: 18 }}>
       <InputField
         id={k("fullName")}
         label="Full Name"
@@ -1160,7 +1164,8 @@ function MemberForm({
       <div>
         <label
           htmlFor={k("year")}
-          className="text-caption text-gray-300 block mb-1.5"
+          className="text-sm font-medium text-gray-200 block mb-1.5"
+          style={{ display: "block", marginBottom: 6, fontWeight: 500 }}
         >
           Year <span className="text-orange-500">*</span>
         </label>
@@ -1171,20 +1176,21 @@ function MemberForm({
           onBlur={() => onFieldBlur(k("year"), "year", member.year)}
           disabled={disabled}
           aria-invalid={!!err("year")}
+          style={{ padding: "12px 16px", width: "100%", borderRadius: 8, boxSizing: "border-box" as const }}
           className={cn(
-            "w-full py-3 px-4 text-sm rounded-lg bg-bg-surface-1 border text-gray-050",
+            "w-full py-3.5 px-4 text-sm rounded-lg bg-[#141414] border text-gray-050",
             "outline-none transition-all duration-200 appearance-none",
             err("year")
-              ? "border-error/60 focus:border-error focus:shadow-[0_0_0_3px_rgba(255,77,77,0.15)]"
-              : "border-[#333] focus:border-orange-500 focus:shadow-[0_0_0_3px_rgba(255,127,42,0.15)]",
+              ? "border-error focus:border-error focus:ring-2 focus:ring-error/25"
+              : "border-[#334155] focus:border-orange-500 focus:ring-2 focus:ring-orange-500/25",
             disabled && "opacity-50 cursor-not-allowed"
           )}
         >
-          <option value="" className="bg-bg-surface-2">
+          <option value="" className="bg-[#141414]">
             Select year
           </option>
           {YEAR_OPTIONS.map((y) => (
-            <option key={y} value={y} className="bg-bg-surface-2">
+            <option key={y} value={y} className="bg-[#141414]">
               {y}
             </option>
           ))}
@@ -1195,7 +1201,7 @@ function MemberForm({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="mt-1 text-xs text-error flex items-center gap-1 overflow-hidden"
+              className="mt-1.5 text-xs text-error flex items-center gap-1 overflow-hidden font-medium"
               role="alert"
             >
               <AlertCircle size={12} className="shrink-0" /> {err("year")}
@@ -1224,8 +1230,8 @@ function MemberForm({
 function ReviewRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start justify-between py-3 border-b border-white/5 last:border-0">
-      <span className="text-caption text-gray-500">{label}</span>
-      <span className="text-caption text-gray-050 text-right max-w-[60%] font-medium">
+      <span className="text-caption text-gray-400 font-medium">{label}</span>
+      <span className="text-caption text-gray-050 text-right max-w-[60%] font-semibold">
         {value}
       </span>
     </div>

@@ -452,6 +452,99 @@ p, li, span, a, h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   Registration Form — Padding & Spacing Overrides
+   (CSS-only, no HTML changes)
+   ============================================ */
+
+/* ── Form step container: generous internal padding ── */
+#reg-next-btn,
+#reg-back-btn,
+#reg-submit-btn {
+  border-radius: 8px;
+}
+
+/* ── All inputs & selects inside the registration section ── */
+[id^="team-name"],
+[id^="member-"],
+[id="dietary-preference"] {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ── Select dropdowns (Year) ── */
+select[id*="-year"] {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* ── Labels: clear anchor spacing above inputs ── */
+label[for^="team-name"],
+label[for^="member-"],
+label[for="dietary-preference"],
+label[for*="-year"] {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+}
+
+/* ── Submit button: prominent & high-contrast ── */
+#reg-submit-btn {
+  padding: 14px 32px;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 8px;
+  letter-spacing: 0.02em;
+  margin-top: 8px;
+}
+
+/* ── Next button ── */
+#reg-next-btn {
+  padding: 12px 28px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* ── Back button ── */
+#reg-back-btn {
+  padding: 12px 24px;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+/* ── T-shirt size buttons ── */
+[id^="tshirt-"] {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* ── Terms checkbox area ── */
+#agree-terms {
+  margin-top: 2px;
+}
+
+/* ── Add Member button ── */
+#add-member-btn {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* ── Copy ID button ── */
+#copy-reg-id {
+  border-radius: 8px;
+}
+
+/* ============================================
    Reduced Motion — WCAG Requirement
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
