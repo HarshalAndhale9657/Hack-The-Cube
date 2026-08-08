@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Terminal, X, Send } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
-   Cube Concierge — Gemini Conversational AI Engine
+   Cube Concierge — Pure Gemini Conversational AI Engine
    Persistent multi-turn chat memory + system_instruction
    ═══════════════════════════════════════════════ */
 
@@ -22,92 +22,14 @@ const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 
 const GEMINI_API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-const SYSTEM_INSTRUCTION = `You are the 'Cube Concierge', the elite AI assistant for 'Hack the Cube 2026', a 24-hour national-level hackathon at Dr. D. Y. Patil Institute of Technology (DIT), Pimpri, Pune. 
-
-CONVERSATIONAL RULES:
-1. You have conversational memory. Answer follow-ups, confirmations ('are you sure?'), and natural dialogue seamlessly.
-2. Maintain a professional, concise, enthusiastic, and hacker/terminal-themed tone.
-3. Use ONLY the official event data below to answer. If a query is completely outside this event's scope, state that you don't have that info and suggest contacting hackthecube@csiclub.org.
-
-MASTER HACKATHON DATABASE:
-- Event: Hack the Cube 2026 (24-Hour National-Level Hackathon).
-- Dates: September 5 to September 6, 2026.
-- Venue: Dr. D. Y. Patil Institute of Technology (DIT), Survey No. 27/A, Near Akurdi Railway Station, Pimpri-Chinchwad, Pune. Free participant parking at Gate 2. Entry at Main Gate.
-- Organizers: CSI Student Chapter. Core Organizers: President, Vice President, Secretary. Faculty Coordinators: Prof. Chaya ma'am and HOD Prof. Omkaresh Kulkarni. Leadership: Principal Nitin Sherje.
-- Total Prize Pool: ₹1,50,000 across 3 Technical Tracks.
-  * Track 1: Winner ₹35,000 | Runner-Up ₹15,000
-  * Track 2: Winner ₹35,000 | Runner-Up ₹15,000
-  * Track 3: Winner ₹35,000 | Runner-Up ₹15,000
-  * Special Recognition: 2 additional teams get exclusive goodies for top innovation/UI.
-- Tracks & Problems: 3 Tracks, 6 problem statements each (18 total challenges). Tracks cover FinTech, Healthcare, Education, Social Media, Agriculture, and Smart Cities. Unlocked on the hackathon day.
-- Timeline:
-  * Sept 5, 8:00 AM: Registration & Verification at Auditorium.
-  * Sept 5, Morning: Inauguration & Podcast-style Speaker Interactions (3 sessions).
-  * Sept 5, 1:30 PM - 3:00 PM: Lunch & Transition to venue.
-  * Sept 5, 3:30 PM: Official 24-Hour Hackathon Clock Starts!
-  * Sept 5, 6:30 PM: Mentorship & Initial Approach Evaluation.
-  * Sept 6, 8:00 AM: Evaluation Round 1.
-  * Sept 6, 3:30 PM: Evaluation Round 2 & Hackathon Clock Ends.
-  * Sept 6, Finale: Results & Award Ceremony.
-- Rules & Logistics: Open to undergraduate/postgraduate college students. Team size: 2 to 4 members. Plagiarism leads to disqualification. 24/7 WiFi, power, meals (dinner, midnight snacks, breakfast, lunch), and resting areas are provided.`;
-
-/* ── Smart Fallback Engine (Used if API quota/rate limits occur) ── */
-const FALLBACK_KNOWLEDGE = [
-  {
-    keywords: ["who", "organizer", "csi", "college", "dit", "pimpri", "about", "what is"],
-    response: "Hack the Cube 2026 is a 24-Hour National-Level Hackathon organized by the CSI Student Chapter at Dr. D. Y. Patil Institute of Technology (DIT), Pimpri, Pune."
-  },
-  {
-    keywords: ["sure", "confirm", "really", "certain", "true"],
-    response: "Affirmative! All details provided are directly verified against the official Hack the Cube 2026 Master Database."
-  },
-  {
-    keywords: ["time", "schedule", "itinerary", "when", "start", "end", "clock", "date", "september"],
-    response: "The event kicks off on Sept 5 with registration at 8:00 AM at the Auditorium, followed by speaker sessions. The official 24-Hour Hackathon Clock runs from 3:30 PM Sept 5 to 3:30 PM Sept 6!"
-  },
-  {
-    keywords: ["prize", "money", "reward", "win", "cash", "amount", "150000", "runner up", "goodies"],
-    response: "The total prize pool is ₹1,50,000 across 3 tracks! Each track features a Winner prize of ₹35,000 and a Runner-Up prize of ₹15,000, plus Special Recognition Awards and goodies for exceptional builds."
-  },
-  {
-    keywords: ["track", "domain", "problem", "challenge", "statement", "18"],
-    response: "There are 3 Technical Tracks with 6 problem statements each (18 total!). Domains span FinTech, Healthcare, Education, Social Media, Agriculture, and Smart Cities."
-  },
-  {
-    keywords: ["team", "size", "member", "individual", "alone", "wolf", "regist"],
-    response: "Teams consist of 2 to 4 members. Valid college IDs are required during reporting."
-  },
-  {
-    keywords: ["rule", "open source", "github", "plagiarism", "prebuilt", "code", "guideline"],
-    response: "All primary development must occur during the official 24 hours. Open-source libraries and APIs are permitted with proper credit. Plagiarism results in disqualification."
-  },
-  {
-    keywords: ["food", "lunch", "dinner", "snack", "stay", "overnight", "facility", "wifi", "power"],
-    response: "We provide 24/7 high-speed Wi-Fi, uninterrupted power, dedicated workspaces, evening refreshments, dinner, midnight snacks, breakfast, and lunch."
-  },
-  {
-    keywords: ["judge", "evaluation", "mentor", "scoring", "marks", "round"],
-    response: "Projects are evaluated across Mentorship Eval (6:30 PM Day 1), Round 1 (8:00 AM Day 2), and Round 2 (3:30 PM Day 2) by a panel of industry experts."
-  },
-  {
-    keywords: ["venue", "location", "address", "map", "reach", "gate", "parking"],
-    response: "The event takes place at Dr. D. Y. Patil Institute of Technology, Survey No. 27/A, Near Akurdi Railway Station, Pimpri-Chinchwad, Pune. Free participant parking is at Gate 2."
-  },
-  {
-    keywords: ["contact", "help", "email", "support", "faculty", "coordinator", "organizer"],
-    response: "For urgent support, contact the CSI Student Chapter at hackthecube@csiclub.org or reach out to Faculty Coordinators Prof. Chaya ma'am and HOD Prof. Omkaresh Kulkarni."
-  }
-];
-
-function getFallbackAnswer(query: string): string {
-  const lower = query.toLowerCase();
-  for (const entry of FALLBACK_KNOWLEDGE) {
-    if (entry.keywords.some((kw) => lower.includes(kw))) {
-      return entry.response;
-    }
-  }
-  return "I am trained on the Hack the Cube 2026 Master Database. You can ask me about tracks, schedule, prize pool, team rules, or venue logistics! For custom queries, email hackthecube@csiclub.org.";
-}
+const SYSTEM_INSTRUCTION = `You are the 'Cube Concierge', the AI assistant for 'Hack the Cube 2026' at DIT Pimpri, Pune (Sept 5-6, 2026).
+RULES: 
+- Answer naturally. You have conversational memory. 
+- Use this data: Prize pool is ₹1,50,000 (₹35k Winner / ₹15k Runner-up across 3 tracks). 18 problem statements. 
+- Timeline: Sept 5 (8AM Registration, 3:30PM Hackathon Starts). Sept 6 (3:30PM Hackathon Ends). 
+- Venue: DIT Pimpri, Gate 2 parking. 
+- Organizers: CSI Club, Prof. Chaya, HOD Omkaresh Kulkarni.
+- If asked a greeting like "hello", introduce yourself energetically as the Cube Concierge!`;
 
 /* ═══════════════════════════════════════════════
    Component
@@ -145,18 +67,18 @@ export function CubeConcierge() {
     const trimmed = input.trim();
     if (!trimmed || isTyping) return;
 
-    // 1. Append user message to UI state
+    // 1. Render user message in UI
     setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
     setInput("");
     setIsTyping(true);
 
-    // 2. Append message to local conversational memory
+    // 2. Add message to local conversation memory
     chatHistoryRef.current.push({
       role: "user",
       parts: [{ text: trimmed }],
     });
 
-    // 3. Query Gemini API with system_instruction + chatHistory
+    // 3. Construct payload with System Instruction + Chat History
     const processQuery = async () => {
       const payload = {
         system_instruction: {
@@ -172,15 +94,13 @@ export function CubeConcierge() {
           body: JSON.stringify(payload),
         });
 
-        if (!response.ok) {
-          throw new Error(`API Error: ${response.status}`);
-        }
+        if (!response.ok) throw new Error("API Failure");
 
         const data = await response.json();
         const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
         if (aiResponse) {
-          // Append AI response to conversational memory
+          // Append AI response to memory
           chatHistoryRef.current.push({
             role: "model",
             parts: [{ text: aiResponse }],
@@ -192,16 +112,14 @@ export function CubeConcierge() {
           throw new Error("Invalid response format");
         }
       } catch (error) {
-        console.warn("Gemini API fallback engaged:", error);
-
-        // Fallback response for continuity
-        const fallbackText = getFallbackAnswer(trimmed);
-        chatHistoryRef.current.push({
-          role: "model",
-          parts: [{ text: fallbackText }],
-        });
-
-        setMessages((prev) => [...prev, { role: "system", text: fallbackText }]);
+        console.error("Gemini API Error:", error);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "system",
+            text: "> ERR: Connection failed. Ensure Gemini API key is valid.",
+          },
+        ]);
       } finally {
         setIsTyping(false);
       }
