@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Bot, X, Send } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
-   Cube Concierge — Master Offline Intent Engine &
-   Fuzzy Math Algorithm (Strict Regex Word Boundaries)
+   Cube Concierge — Hyper-Granular Micro-Intent
+   Offline Engine & Fuzzy Math Algorithm
    ═══════════════════════════════════════════════ */
 
 interface Message {
@@ -21,74 +21,179 @@ interface KnowledgeItem {
 }
 
 // =====================================================================
-// 1. THE MASTER KNOWLEDGE MATRIX (COLLISION-PROOFED)
+// 1. HYPER-GRANULAR MICRO-INTENT MATRIX
 // =====================================================================
 
 const KNOWLEDGE_MATRIX: KnowledgeItem[] = [
+  // --- GREETINGS & IDENTITY ---
   {
     intent: "greeting",
-    phrases: ["hi", "hello", "hey", "yo", "sup", "greetings", "good morning", "what is your name", "who are you", "what can you do"],
-    keywords: ["hello", "hey", "concierge", "bot", "assistant", "help"],
-    response: "Hello! I am the Cube Concierge, your instant assistant for Hack the Cube 2026. Ask me about the schedule, prize money, problem statements, team rules, registration steps, or venue location!"
+    phrases: ["hi", "hello", "hey", "yo", "sup", "greetings", "good morning"],
+    keywords: ["hello", "hey", "help"],
+    response: "Hello! I am the Cube Concierge. I can give you exact details on the schedule, prizes, rules, or logistics for Hack the Cube 2026. What do you need to know?"
   },
   {
-    intent: "dates_and_time",
-    phrases: ["when is the hackathon", "what is the date", "what days", "hackathon dates", "what is the schedule", "inauguration ceremony", "when is the inauguration"],
-    keywords: ["date", "dates", "when", "time", "timing", "schedule", "itinerary", "clock", "september", "inauguration", "ceremony", "start", "end"],
-    response: "Timeline & Inauguration:\n• Sept 5, 8:00 AM: Registration at the Auditorium, followed by the Inauguration Ceremony.\n• Sept 5, 3:30 PM: Official 24-Hour Hackathon Clock Starts!\n• Sept 6, 3:30 PM: Coding Ends.\n• Sept 6, Evening: Award Ceremony."
+    intent: "bot_identity",
+    phrases: ["what is your name", "who are you", "what can you do", "are you ai"],
+    keywords: ["name", "who", "concierge", "bot"],
+    response: "I'm the Cube Concierge! I'm a local logic engine engineered specifically for Hack the Cube 2026. I know the rulebook inside and out."
+  },
+
+  // --- DATES, TIMING & INAUGURATION ---
+  {
+    intent: "exact_dates",
+    phrases: ["what is the date", "what days", "hackathon dates", "when is the hackathon"],
+    keywords: ["date", "dates", "september", "days"],
+    response: "Hack the Cube 2026 takes place over two days: September 5th and September 6th, 2026."
   },
   {
-    intent: "prizes",
-    phrases: ["what is the prize pool", "how much money can i win", "first prize", "runner up prize", "cash rewards", "winning amount", "is there a cash prize"],
-    keywords: ["prize", "prizes", "money", "cash", "reward", "rewards", "win", "winning", "amount", "150000", "35000", "15000", "pool", "goodies"],
-    response: "The total cash prize pool is ₹1,50,000 distributed equally across 3 tracks:\n• Track Winner (3 teams): ₹35,000 each\n• Track Runner-Up (3 teams): ₹15,000 each\n• Special Recognition: 2 additional teams win exclusive goodies for top UI/UX and innovation!"
+    intent: "start_time",
+    phrases: ["when does it start", "what time does the coding start", "when is the clock starting"],
+    keywords: ["start", "timing", "clock", "begins"],
+    response: "The official 24-hour coding clock starts exactly at 3:30 PM on September 5th!"
   },
   {
-    intent: "tracks_and_problems",
-    phrases: ["what are the tracks", "how many problem statements", "show problem statements", "what domains", "type of problem statement", "what are the problems"],
-    keywords: ["track", "tracks", "domain", "domains", "statement", "statements", "challenge", "challenges", "18", "fintech", "healthcare", "agriculture", "smart city", "education"],
-    response: "There are 3 Technical Tracks featuring 6 problem statements each (18 total challenges!). Domains include FinTech, Healthcare, Agriculture, Smart Cities, Social Media, and Education. To ensure fairness, exact problem statements will be unlocked on the event day."
+    intent: "inauguration",
+    phrases: ["inauguration ceremony", "when is the inauguration", "where is the inauguration", "podcast format", "who is speaking"],
+    keywords: ["inauguration", "ceremony", "podcast", "speaker", "speakers"],
+    response: "The Inauguration happens on the morning of Sept 5th at the Auditorium. Instead of boring lectures, we are hosting a podcast-style speaker series featuring 3 industry leaders doing interactive Q&A!"
+  },
+
+  // --- PRIZES (SPLIT INTO POOL VS AMOUNTS) ---
+  {
+    intent: "total_prize_pool",
+    phrases: ["what is the prize pool", "total prize", "is there a cash prize"],
+    keywords: ["pool", "total", "150000", "lakhs"],
+    response: "The total cash prize pool for the event is a massive ₹1,50,000, distributed across our 3 tracks!"
   },
   {
-    intent: "team_size_and_registration",
-    phrases: ["what is the team size", "how to register", "how to fill the form", "guide me how to fill", "registration steps", "guide me to register", "is team compulsory"],
-    keywords: ["team", "teams", "size", "member", "members", "register", "registration", "process", "form", "steps", "guide", "apply", "compulsory", "solo", "alone", "individual"],
-    response: "Registration & Team Rules:\n1. Team size is 2 to 4 members. You cannot compete completely solo, but individual registrants will be matched into teams via our matchmaking feature!\n2. To apply, click 'Register Now' on the top right and fill out the form.\n3. All members must carry valid college IDs."
+    intent: "specific_prize_amounts",
+    phrases: ["how much money can i win", "first prize", "runner up prize", "winning amount", "prize breakdown"],
+    keywords: ["prize", "prizes", "money", "cash", "reward", "win", "amount", "35000", "15000"],
+    response: "For each of the 3 tracks, the Winner receives ₹35,000 and the Runner-Up receives ₹15,000. Plus, two special teams will win exclusive goodies for top UI/UX and Innovation."
+  },
+
+  // --- TRACKS & PROBLEM STATEMENTS ---
+  {
+    intent: "track_domains",
+    phrases: ["what are the tracks", "what domains", "themes"],
+    keywords: ["track", "tracks", "domain", "domains", "fintech", "healthcare", "agriculture"],
+    response: "We have 3 Technical Tracks covering exciting domains: FinTech, Healthcare, Agriculture, Smart Cities, Social Media, and Education."
   },
   {
-    intent: "food_and_dietary",
-    phrases: ["will food be provided", "veg or non veg", "am vegetarian", "what meals are included", "will we get dinner", "jain food", "what type of food"],
-    keywords: ["food", "meal", "meals", "eat", "veg", "vegetarian", "non-veg", "chicken", "dinner", "lunch", "breakfast", "snacks", "diet", "dietary"],
-    response: "Full hospitality is provided throughout the 24 hours!\n• Meals Included: Evening snacks, dinner, midnight refreshments, breakfast, and lunch.\n• Dietary Options: Both Vegetarian and Non-Vegetarian options are available (you specify this during registration)."
+    intent: "problem_statements",
+    phrases: ["how many problem statements", "show problem statements", "what are the problems", "when will challenges be unlocked"],
+    keywords: ["statement", "statements", "challenge", "challenges", "18"],
+    response: "There are 6 problem statements per track (18 total challenges!). To ensure a fair 24-hour competition, the exact problem statements are locked and will only be revealed on the event day."
+  },
+
+  // --- REGISTRATION & TEAMS (SPLIT INTO FEE, SIZE, SOLO, STEPS) ---
+  {
+    intent: "registration_fee",
+    phrases: ["what is the registration fee", "is it free", "how much does it cost to register"],
+    keywords: ["fee", "cost", "price", "pay", "rupees"],
+    response: "The exact registration fee details are listed on the official portal. Note that fees are non-refundable once paid, as they cover your food and 24-hour infrastructure logistics."
   },
   {
-    intent: "facilities_and_stay",
-    phrases: ["where will we sleep", "is there overnight stay", "resting facilities", "is wifi provided", "will there be power outlets", "what type of facilities"],
-    keywords: ["stay", "overnight", "sleep", "rest", "resting", "wifi", "internet", "power", "charging", "plug", "extension", "washroom", "facilities", "facility"],
-    response: "We provide complete 24-hour infrastructure support:\n• High-speed Wi-Fi & continuous electricity with backup power.\n• Dedicated team workspaces with extension boards.\n• Designated overnight resting areas and washrooms.\n• First-aid medical support and 24/7 campus security."
+    intent: "registration_steps",
+    phrases: ["how to register", "how to fill the form", "registration steps", "guide me to register"],
+    keywords: ["register", "registration", "form", "apply", "steps", "portal"],
+    response: "To register, click the 'Register Now' button on our portal. Fill in your team details, college info, and preferred technical track. You will receive a confirmation email once approved."
   },
   {
-    intent: "venue_and_location",
-    phrases: ["where is the venue", "how to reach the college", "what is the address", "which gate to enter", "where to park"],
-    keywords: ["venue", "location", "address", "map", "reach", "gate", "parking", "pimpri", "dit", "akurdi", "station", "auditorium"],
-    response: "Venue Information:\n• Location: Dr. D. Y. Patil Institute of Technology (DIT), Survey No. 27/A, Near Akurdi Railway Station, Pimpri-Chinchwad, Pune - 411044.\n• Entry Gate: Main Gate.\n• Free Parking: Gate 2 for all registered participants."
+    intent: "team_size",
+    phrases: ["what is the team size", "how many members", "maximum members", "minimum members"],
+    keywords: ["team", "teams", "size", "member", "members"],
+    response: "Teams must consist of 2 to 4 members. All members must be currently enrolled college students and carry valid college IDs."
   },
   {
-    intent: "rules_and_plagiarism",
-    phrases: ["can we use github", "is prebuilt code allowed", "can I use open source", "what are the rules", "plagiarism policy"],
-    keywords: ["rule", "rules", "plagiarism", "prebuilt", "existing", "github", "opensource", "cheating", "disqualify", "guideline"],
-    response: "Strict Coding Rules:\n1. All major code development must be done during the official 24-hour window.\n2. Open-source libraries, APIs, and frameworks are allowed with proper credit.\n3. Plagiarism or submitting pre-built projects results in immediate disqualification."
+    intent: "solo_participation",
+    phrases: ["can i participate solo", "what if i am an individual", "can i join alone", "i want to participate solo", "is team compulsory"],
+    keywords: ["solo", "alone", "individual", "single"],
+    response: "You cannot compete completely solo for the 24 hours. HOWEVER, you can register as an individual! Our system will automatically match you with other solo developers to form a complete team."
   },
   {
-    intent: "technical_issues_and_refunds",
-    phrases: ["my id is not matching", "facing error", "website glitch", "payment failed", "form not working", "problem in registering", "there is a problem", "i want my money back", "can i get a refund", "accidentally submitted", "made a mistake", "wrong details", "edit form"],
-    keywords: ["error", "bug", "glitch", "issue", "problem", "problems", "failed", "matching", "support", "help", "id", "refund", "cancel", "money back", "stuck", "accidentally", "mistake", "wrong"],
-    response: "Support & Troubleshooting:\n• Technical Glitches (ID matching, accidental submissions, form edits): Email hackthecube@csiclub.org with a screenshot/details so our tech team can resolve it manually.\n• Refunds: Registration fees are generally non-refundable. Contact support for severe emergencies."
+    intent: "eligibility",
+    phrases: ["who can participate", "who is eligible", "can school students join"],
+    keywords: ["participate", "eligible", "eligibility", "students", "college"],
+    response: "The hackathon is open to currently enrolled undergraduate and postgraduate students from recognized technical colleges and universities."
+  },
+
+  // --- FOOD & ACCOMMODATION (SPLIT) ---
+  {
+    intent: "food_general",
+    phrases: ["will food be provided", "what meals are included", "will we get dinner", "is food free"],
+    keywords: ["food", "meal", "meals", "dinner", "lunch", "breakfast", "snacks"],
+    response: "Yes, full hospitality is provided! You will get evening snacks, dinner, midnight refreshments, breakfast, and lunch during the 24-hour sprint."
+  },
+  {
+    intent: "food_dietary",
+    phrases: ["veg or non veg", "am vegetarian", "jain food", "what type of food"],
+    keywords: ["veg", "vegetarian", "non-veg", "chicken", "diet", "dietary"],
+    response: "We cater to both! Both Vegetarian and Non-Vegetarian meal options will be available. You can specify your exact dietary preference when filling out the registration form."
+  },
+  {
+    intent: "accommodation",
+    phrases: ["is accommodation available", "where will we sleep", "resting facilities", "can we sleep"],
+    keywords: ["accommodation", "stay", "overnight", "sleep", "rest", "bed", "washroom"],
+    response: "Since this is a continuous 24-hour event, there are no hotel rooms, but we provide designated overnight resting areas, washrooms, and 24/7 campus security so you can rest safely when needed."
+  },
+
+  // --- INFRASTRUCTURE & HARDWARE ---
+  {
+    intent: "wifi_and_power",
+    phrases: ["is wifi provided", "will there be power outlets", "internet access"],
+    keywords: ["wifi", "internet", "power", "charging", "plug", "extension"],
+    response: "Absolutely. We provide 24/7 high-speed Wi-Fi, dedicated team workspaces, and continuous electricity with backup power generators to ensure zero interruptions."
+  },
+  {
+    intent: "hardware_laptop",
+    phrases: ["do i need to bring my own laptop", "what should i bring", "hardware provided", "laptops"],
+    keywords: ["bring", "laptop", "laptops", "charger", "hardware", "gear"],
+    response: "Yes, you must bring your own laptops, chargers, and any specific hardware your prototype needs. We also highly recommend bringing a personal extension board for your team's desk!"
+  },
+  {
+    intent: "venue_location",
+    phrases: ["where is the venue", "how to reach the college", "what is the address", "where to park"],
+    keywords: ["venue", "location", "address", "map", "parking", "pimpri", "dit"],
+    response: "The event is at Dr. D. Y. Patil Institute of Technology (DIT), Near Akurdi Railway Station, Pimpri-Chinchwad, Pune. Free parking is available at Gate 2."
+  },
+
+  // --- RULES, JUDGING & TECH SUPPORT ---
+  {
+    intent: "rules_plagiarism",
+    phrases: ["can we use github", "is prebuilt code allowed", "can I use open source", "plagiarism policy"],
+    keywords: ["rule", "rules", "plagiarism", "prebuilt", "github", "opensource", "cheating", "disqualify"],
+    response: "All major code development must happen during the 24 hours. Open-source libraries are allowed with credit, but submitting pre-built projects or direct plagiarism will result in immediate disqualification."
+  },
+  {
+    intent: "judging_and_mentorship",
+    phrases: ["how will projects be judged", "what are the judging criteria", "mentorship program"],
+    keywords: ["judge", "judges", "judging", "evaluation", "criteria", "mentor", "mentorship"],
+    response: "Projects are judged on Innovation, Technical Complexity, Impact, and Presentation. Mentors will do an initial checkpoint at 6:30 PM (Day 1), followed by Round 1 (Morning, Day 2) and the Final Demo (Afternoon, Day 2)."
+  },
+  {
+    intent: "certificates",
+    phrases: ["will certificates be provided", "will i get a certificate", "participation certificate"],
+    keywords: ["certificate", "certificates", "participation", "cert"],
+    response: "Yes! All eligible participants who attend the full 24 hours and present their prototype in Round 2 will receive official National-Level Participation Certificates."
+  },
+  {
+    intent: "technical_issues",
+    phrases: ["my id is not matching", "facing error", "payment failed", "form not working", "accidentally submitted", "made a mistake"],
+    keywords: ["error", "bug", "glitch", "issue", "problem", "failed", "matching", "support", "help", "mistake"],
+    response: "For technical glitches (ID matching, accidental form submissions, payment errors), please email hackthecube@csiclub.org with a screenshot so our tech team can resolve it manually."
+  },
+  {
+    intent: "refunds",
+    phrases: ["i want my money back", "can i get a refund", "cancel my registration"],
+    keywords: ["refund", "refunds", "cancel", "money back"],
+    response: "Registration fees are generally non-refundable as the funds are pre-committed to venue logistics and catering. If you have a severe medical emergency, contact our support email directly."
   }
 ];
 
 // =====================================================================
-// 2. FUZZY MATH ENGINE (LEVENSHTEIN DISTANCE)
+// 2. MATH ENGINE (LEVENSHTEIN DISTANCE)
 // =====================================================================
 
 function getEditDistance(a: string, b: string): number {
@@ -99,12 +204,8 @@ function getEditDistance(a: string, b: string): number {
     .fill(null)
     .map(() => Array(b.length + 1).fill(0));
 
-  for (let i = 0; i <= a.length; i += 1) {
-    matrix[i][0] = i;
-  }
-  for (let j = 0; j <= b.length; j += 1) {
-    matrix[0][j] = j;
-  }
+  for (let i = 0; i <= a.length; i += 1) { matrix[i][0] = i; }
+  for (let j = 0; j <= b.length; j += 1) { matrix[0][j] = j; }
 
   for (let i = 1; i <= a.length; i += 1) {
     for (let j = 1; j <= b.length; j += 1) {
@@ -126,17 +227,16 @@ function getEditDistance(a: string, b: string): number {
 function queryMatrix(userInput: string): string {
   if (!userInput || !userInput.trim()) return "";
 
-  const rawText = userInput.toLowerCase().trim();
-  const tokens = rawText
-    .replace(/[^\w\s]/g, "")
-    .split(/\s+/)
-    .filter((t) => t.length > 1);
+  const cleanInput = userInput.toLowerCase().trim();
+  const rawText = cleanInput.replace(/[^\w\s]/g, "");
+  const tokens = rawText.split(/\s+/).filter((t) => t.length > 1);
 
-  // LAYER 1: Strict Regex Word Boundaries (Prevents "which" from triggering "hi")
+  // LAYER 1: Strict Regex Phrase Boundaries (Prevents "which" triggering "hi")
   for (const entry of KNOWLEDGE_MATRIX) {
     if (entry.phrases) {
       for (const phrase of entry.phrases) {
-        const strictRegex = new RegExp(`\\b${phrase}\\b`, "i");
+        const cleanPhrase = phrase.replace(/[^\w\s]/g, "");
+        const strictRegex = new RegExp(`\\b${cleanPhrase}\\b`, "i");
         if (strictRegex.test(rawText)) {
           return entry.response;
         }
@@ -171,13 +271,13 @@ function queryMatrix(userInput: string): string {
     }
   }
 
-  // LAYER 3: Threshold
+  // LAYER 3: Threshold Validation
   if (highestScore >= 8 && bestEntry) {
     return (bestEntry as KnowledgeItem).response;
   }
 
-  // LAYER 4: Fallback
-  return "I am trained exclusively on the Hack the Cube 2026 rulebook! I didn't quite catch that. You can ask me directly about:\n• Schedule & Inauguration\n• Prize Pool (₹1.5 Lakhs) & 18 Problems\n• Registration Steps & Team Rules\n• Food, Facilities & Venue Location\n• Tech Support or Glitches";
+  // LAYER 4: Conversational Fallback
+  return "I'm the offline Cube Concierge! I didn't quite catch that. You can ask me highly specific questions like 'What is the team size?', 'Is there veg food?', 'When does it start?', or 'Do I bring my laptop?'";
 }
 
 /* ═══════════════════════════════════════════════
