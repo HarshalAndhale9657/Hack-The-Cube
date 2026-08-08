@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { Terminal, X, Send } from "lucide-react";
+import { Bot, X, Send } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
    Cube Concierge — Master Offline Intent Engine &
@@ -276,22 +276,22 @@ export function CubeConcierge() {
           height: 60,
           borderRadius: "50%",
           background: "#111",
-          border: "1px solid #333",
+          border: "1px solid #f97316",
           boxShadow: isOpen
-            ? "0 0 20px rgba(249, 115, 22, 0.6)"
-            : "0 0 15px rgba(249, 115, 22, 0.4)",
+            ? "0 0 25px rgba(249, 115, 22, 0.7)"
+            : "0 0 15px rgba(249, 115, 22, 0.5)",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           cursor: "pointer",
-          transition: "box-shadow 0.3s ease, transform 0.3s ease",
+          transition: "box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease",
           transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
         }}
       >
         {isOpen ? (
           <X size={24} color="white" />
         ) : (
-          <Terminal size={24} color="white" />
+          <Bot size={28} color="#f97316" />
         )}
       </button>
 
@@ -330,23 +330,40 @@ export function CubeConcierge() {
               background: "rgba(0,0,0,0.4)",
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <span
-                style={{ fontWeight: "bold", color: "white", fontSize: 15 }}
-              >
-                Cube Concierge
-              </span>
-              <span
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div
                 style={{
-                  fontFamily: "monospace",
-                  fontSize: 10,
-                  textTransform: "uppercase",
-                  color: "#f97316",
-                  letterSpacing: "0.1em",
+                  width: 34,
+                  height: 34,
+                  borderRadius: "50%",
+                  background: "rgba(249, 115, 22, 0.15)",
+                  border: "1px solid rgba(249, 115, 22, 0.4)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 0 10px rgba(249, 115, 22, 0.3)",
                 }}
               >
-                Agentic RAG System
-              </span>
+                <Bot size={20} color="#f97316" />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <span
+                  style={{ fontWeight: "bold", color: "white", fontSize: 15 }}
+                >
+                  Cube Concierge
+                </span>
+                <span
+                  style={{
+                    fontFamily: "monospace",
+                    fontSize: 10,
+                    textTransform: "uppercase",
+                    color: "#f97316",
+                    letterSpacing: "0.1em",
+                  }}
+                >
+                  Agentic AI Assistant
+                </span>
+              </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
