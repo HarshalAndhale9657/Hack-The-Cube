@@ -91,7 +91,7 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
             </ScrollReveal>
           );
         })}
-      </div>
+      </div><br></br>
 
       {/* Special Awards */}
       {specialAwards.length > 0 && (
@@ -99,7 +99,7 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
           <h3 className="text-heading-1 text-gray-050 text-center font-display flex items-center justify-center gap-2">
             <Award size={24} className="text-orange-500" />
             Special Category Awards
-          </h3>
+          </h3><br></br>
           <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {specialAwards.map((tier) => {
               const IconComp = prizeIconMap[tier.icon || ""] || Award;
@@ -134,6 +134,8 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
           </StaggerContainer>
         </div>
       )}
+
+      <br></br>
 
       {/* General Perks for All Participants */}
       <ScrollReveal>
