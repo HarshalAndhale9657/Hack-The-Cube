@@ -4,8 +4,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Terminal, X, Send } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
-   Cube Concierge — Client-Side Generative NLG &
-   Streaming Typing Engine (100% Offline Reliable)
+   Cube Concierge — Exhaustive Intent Matrix Engine
+   3-Layer Matcher & 10ms Streaming Renderer
    ═══════════════════════════════════════════════ */
 
 interface Message {
@@ -13,55 +13,188 @@ interface Message {
   text: string;
 }
 
-const EVENT_FACTS: Record<string, string> = {
-  overview:
-    "Hack the Cube 2026 is a premier 24-hour national-level hackathon organized by the CSI Student Chapter at Dr. D. Y. Patil Institute of Technology (DIT), Pimpri, Pune.",
-  dates: "The event takes place from September 5 to September 6, 2026.",
-  schedule:
-    "Day 1 starts with registration at 8:00 AM at the Auditorium, followed by podcast-style speaker sessions. The official 24-hour coding clock runs from 3:30 PM on Sept 5 to 3:30 PM on Sept 6, concluding with Round 2 judging and the award ceremony.",
-  prizes:
-    "The total cash prize pool is ₹1,50,000 distributed across 3 tracks. Each track winner gets ₹35,000 and each runner-up gets ₹15,000. Special goodies will also be awarded for top UI/UX and innovation.",
-  tracks:
-    "There are 3 technical tracks featuring 6 problem statements each (18 total challenges) covering FinTech, Healthcare, Agriculture, Smart Cities, and Education. Problem statements are unlocked on the event day.",
-  teams:
-    "Teams can have 2 to 4 members. Individual registrants are automatically matched into full-stack squads using our competency clustering feature.",
-  rules:
-    "All primary development must happen within the 24 hours. Open-source tools and APIs are allowed with proper credit. Direct plagiarism or pre-built projects lead to immediate disqualification.",
-  facilities:
-    "Participants get 24/7 high-speed Wi-Fi, uninterrupted power, dedicated workspaces, resting zones, and full meals (evening snacks, dinner, midnight refreshments, breakfast, and lunch).",
-  venue:
-    "The venue is Dr. D. Y. Patil Institute of Technology, Pimpri, Pune. Entry is via the Main Gate, with free participant parking available at Gate 2.",
-  organizers:
-    "Organized by the CSI Chapter under Principal Nitin Sherje, HOD Prof. Omkaresh Kulkarni, and Faculty Coordinator Prof. Chaya ma'am, alongside the CSI student leadership team.",
-};
+interface KnowledgeItem {
+  intent: string;
+  phrases: string[];
+  keywords: string[];
+  response: string;
+}
 
-const INTROS = [
-  "Sure thing! ",
-  "Got it. ",
-  "Here is what you need to know: ",
-  "Directly from the rulebook: ",
-  "Good question! ",
-  "Let me break that down for you. ",
-  "Here are the details: ",
+const KNOWLEDGE_MATRIX: KnowledgeItem[] = [
+  // 1. GREETINGS & INTRODUCTIONS
+  {
+    intent: "greeting",
+    phrases: ["hi", "hello", "hey", "yo", "sup", "greetings", "good morning", "good afternoon", "good evening", "namaste", "who are you", "what is your name", "what can you do"],
+    keywords: ["hi", "hello", "hey", "yo", "bot", "assistant", "concierge", "help"],
+    response: "Hello! I am the Cube Concierge, your instant assistant for Hack the Cube 2026. You can ask me about dates, schedule, prize money, problem statements, team rules, food, Wi-Fi, or venue location!"
+  },
+
+  // 2. DATES & TIMING
+  {
+    intent: "dates_and_time",
+    phrases: ["when is the hackathon", "what is the date", "exact date", "what days", "hackathon dates", "when will it be conducted", "time of the hackathon", "what is the schedule"],
+    keywords: ["date", "dates", "when", "day", "days", "time", "timing", "schedule", "itinerary", "clock", "september", "duration", "hours"],
+    response: "Hack the Cube 2026 takes place from September 5 to September 6, 2026 (Saturday to Sunday):\n• Sept 5, 8:00 AM: Registration & Verification at Auditorium\n• Sept 5, 3:30 PM: Official 24-Hour Hackathon Clock Starts!\n• Sept 6, 3:30 PM: Coding Ends & Round 2 Judging Starts\n• Sept 6, Evening: Award Ceremony & Results."
+  },
+
+  // 3. PRIZE POOL & CASH REWARDS
+  {
+    intent: "prizes",
+    phrases: ["what is the prize pool", "how much money can i win", "first prize", "runner up prize", "cash rewards", "winning amount", "prize breakdown", "is there a cash prize"],
+    keywords: ["prize", "prizes", "money", "cash", "reward", "rewards", "win", "winning", "amount", "150000", "35000", "15000", "pool", "goodies", "stipend"],
+    response: "The total cash prize pool is ₹1,50,000 distributed equally across 3 tracks:\n• Track Winner (3 teams): ₹35,000 each\n• Track Runner-Up (3 teams): ₹15,000 each\n• Total: 6 main cash prize winning teams.\n• Special Recognition: 2 additional teams win exclusive goodies for top UI/UX and innovation!"
+  },
+
+  // 4. PROBLEM STATEMENTS & TRACKS
+  {
+    intent: "tracks_and_problems",
+    phrases: ["what are the tracks", "how many problem statements", "show problem statements", "what domains", "when will challenges be unlocked", "type of problem statements", "what topics"],
+    keywords: ["track", "tracks", "domain", "domains", "problem", "problems", "statement", "statements", "challenge", "challenges", "18", "fintech", "healthcare", "agriculture", "smart city", "education"],
+    response: "There are 3 Technical Tracks featuring 6 problem statements each (18 total challenges!). Domains include FinTech, Healthcare, Agriculture, Smart Cities, Social Media, and Education. To ensure fairness, exact problem statements will be unlocked on the event day."
+  },
+
+  // 5. SOLO PARTICIPATION vs TEAM MANDATE
+  {
+    intent: "solo_and_team_rules",
+    phrases: ["can i participate solo", "can i join alone", "is team compulsory", "i want to attend alone", "can i come single", "can 1 person participate", "must i have a team"],
+    keywords: ["solo", "alone", "single", "individual", "compulsory", "mandatory", "lone", "wolf", "force"],
+    response: "Team size is strictly 2 to 4 members. You cannot compete completely solo during the 24 hours. However, if you register as an individual, our Competency Matchmaking feature will automatically group you into a full-stack squad with complementary skill sets!"
+  },
+
+  // 6. GENERAL TEAM SIZE & REGISTRATION
+  {
+    intent: "team_size_and_registration",
+    phrases: ["what is the team size", "how many members per team", "minimum team size", "maximum team size", "how to register", "registration process", "is registration free"],
+    keywords: ["team", "teams", "size", "member", "members", "register", "registration", "fee", "cost", "ticket", "process"],
+    response: "Registration Details:\n• Team Size: 2 to 4 participants per team.\n• Process: Click 'Register Now' on the top right, fill in team details, and submit.\n• All team members must carry valid college identity cards during reporting."
+  },
+
+  // 7. DIETARY PREFERENCES & FOOD
+  {
+    intent: "food_and_dietary",
+    phrases: ["will food be provided", "is food free", "veg or non veg", "am vegetarian", "what meals are included", "what is on the menu", "will we get dinner", "jain food", "breakfast"],
+    keywords: ["food", "meal", "meals", "eat", "eating", "veg", "vegetarian", "non-veg", "dinner", "lunch", "breakfast", "snacks", "tea", "coffee", "water", "diet", "dietary"],
+    response: "Yes! Full hospitality is provided throughout the 24 hours:\n• Meals Included: Evening snacks, dinner, midnight refreshments, breakfast, and lunch.\n• Dietary Options: Both Vegetarian and Non-Vegetarian options are available. You can specify your choice during registration!"
+  },
+
+  // 8. FACILITIES & OVERNIGHT STAY
+  {
+    intent: "facilities_and_stay",
+    phrases: ["where will we sleep", "is there overnight stay", "resting facilities", "is wifi provided", "will there be power outlets", "can we stay at night", "washroom facilities"],
+    keywords: ["stay", "overnight", "sleep", "rest", "resting", "wifi", "internet", "power", "charging", "plug", "extension", "washroom", "facility", "facilities"],
+    response: "We provide complete 24-hour infrastructure support:\n• High-speed Wi-Fi & continuous electricity with backup power.\n• Dedicated team workspaces with extension boards.\n• Designated overnight resting areas and washrooms.\n• First-aid medical support and 24/7 campus security."
+  },
+
+  // 9. VENUE, LOCATION & PARKING
+  {
+    intent: "venue_and_location",
+    phrases: ["where is the venue", "how to reach the college", "what is the address", "which gate to enter", "is parking available", "where to park", "nearest station"],
+    keywords: ["venue", "location", "address", "map", "reach", "gate", "parking", "pimpri", "dit", "akurdi", "station", "building", "auditorium"],
+    response: "Venue Information:\n• Location: Dr. D. Y. Patil Institute of Technology (DIT), Survey No. 27/A, Near Akurdi Railway Station, Pimpri-Chinchwad, Pune - 411044.\n• Entry Gate: Main Gate.\n• Free Parking: Gate 2 for all registered participants."
+  },
+
+  // 10. RULES, CODE OF CONDUCT & PLAGIARISM
+  {
+    intent: "rules_and_plagiarism",
+    phrases: ["can we use github", "is prebuilt code allowed", "can I use open source", "what are the rules", "plagiarism policy", "what happens if caught cheating", "can we use templates"],
+    keywords: ["rule", "rules", "plagiarism", "prebuilt", "existing", "github", "opensource", "open-source", "cheating", "disqualify", "disqualification", "guideline", "guidelines"],
+    response: "Strict Coding Rules:\n1. All major code development must be done during the official 24-hour window.\n2. Open-source libraries, APIs, and frameworks are allowed with proper credit.\n3. Plagiarism or submitting pre-built projects results in immediate disqualification.\n4. Teams must be able to explain their code to the judging panel."
+  },
+
+  // 11. WHAT TO BRING & HARDWARE
+  {
+    intent: "what_to_bring",
+    phrases: ["what should i bring", "do i need my own laptop", "hardware provided", "things to carry", "checklist for participants"],
+    keywords: ["bring", "carry", "laptop", "gear", "hardware", "checklist", "id", "card", "charger"],
+    response: "Participant Checklist:\n• Valid College Identity Card (Mandatory for entry).\n• Laptops, chargers, and hardware components needed for your prototype.\n• Extension boards (recommended).\n• Personal toiletries for overnight stay."
+  },
+
+  // 12. JUDGING & EVALUATION ROUNDS
+  {
+    intent: "judging_and_evaluation",
+    phrases: ["how will we be judged", "what are the judging criteria", "how many evaluation rounds", "who are the judges", "when is evaluation"],
+    keywords: ["judge", "judges", "judging", "evaluation", "eval", "criteria", "marks", "scoring", "round", "rounds", "mentor", "mentorship"],
+    response: "Evaluation Structure:\n• Mentorship Checkpoint: Sept 5, 6:30 PM (Initial approach review).\n• Round 1 Evaluation: Sept 6, 8:00 AM (Core progress check).\n• Round 2 Evaluation: Sept 6, 3:30 PM (Final working prototype demo).\n• Criteria: Innovation, Technical Depth, Feasibility, Impact, and Presentation."
+  },
+
+  // 13. REFUNDS & CANCELLATIONS
+  {
+    intent: "refunds_and_cancellation",
+    phrases: ["can i get a refund", "i want my money back", "can i cancel my registration", "refund policy", "how to withdraw"],
+    keywords: ["refund", "refunds", "cancel", "cancellation", "withdraw", "return", "money back"],
+    response: "All event registration fees are generally non-refundable as funds are committed to venue logistics and food arrangements. If you have a severe medical emergency, please contact hackthecube@csiclub.org with proof."
+  },
+
+  // 14. TECHNICAL GLITCHES & ID ISSUES
+  {
+    intent: "technical_issues",
+    phrases: ["my id is not matching", "facing error during registration", "website glitch", "payment failed", "cannot upload details", "form not working"],
+    keywords: ["error", "bug", "glitch", "issue", "problem", "failed", "matching", "not matching", "support", "help", "id"],
+    response: "If you are experiencing a technical error or ID matching issue on the portal, please send an email to hackthecube@csiclub.org with a screenshot of the error and your team name so our technical team can fix it manually."
+  },
+
+  // 15. ORGANIZERS & FACULTY
+  {
+    intent: "organizers_and_faculty",
+    phrases: ["who is organizing this", "faculty coordinators", "who is the hod", "who is the principal", "csi club details"],
+    keywords: ["organizer", "organizers", "csi", "faculty", "chaya", "omkaresh", "kulkarni", "president", "hod", "principal", "nitin", "sherje", "contact"],
+    response: "Hack the Cube 2026 is organized by the Computer Society of India (CSI) Chapter at DIT Pimpri:\n• Institutional Leadership: Principal Nitin Sherje & HOD Prof. Omkaresh Kulkarni\n• Faculty Coordinator: Prof. Chaya ma'am\n• Student Committee: CSI President, Vice President, Secretary, and Technical Team."
+  },
+
+  // 16. CERTIFICATES & PARTICIPATION
+  {
+    intent: "certificates",
+    phrases: ["will i get a certificate", "is participation certificate provided", "who gets certificates", "certificate for all"],
+    keywords: ["certificate", "certificates", "participation", "cert", "appreciation"],
+    response: "Yes! All eligible participants who attend the full 24-hour hackathon and present their prototype in Round 2 will receive official National-Level Participation Certificates from the CSI Chapter."
+  }
 ];
 
-const CONFIRMATIONS = [
-  "Yes, absolutely 100% verified! ",
-  "Without a doubt! ",
-  "Yes, I'm completely sure. ",
-  "Positive! Here's the official confirmation again: ",
-];
+function queryMatrix(userInput: string): string {
+  if (!userInput || !userInput.trim()) return "";
 
-const CONNECTORS = [
-  " In addition, ",
-  " Also worth noting: ",
-  " Furthermore, ",
-  " Keep in mind that ",
-  " On top of that, ",
-];
+  const rawText = userInput.toLowerCase().trim();
+  const tokens = rawText.replace(/[^\w\s]/g, "").split(/\s+/).filter(t => t.length > 1);
 
-function getRandomItem(arr: string[]): string {
-  return arr[Math.floor(Math.random() * arr.length)];
+  // LAYER 1: Exact / Partial Phrase Match (Highest Accuracy)
+  for (const entry of KNOWLEDGE_MATRIX) {
+    for (const phrase of entry.phrases) {
+      if (rawText.includes(phrase) || phrase.includes(rawText)) {
+        return entry.response;
+      }
+    }
+  }
+
+  // LAYER 2: Weighted Keyword Token Overlap
+  let bestEntry: KnowledgeItem | null = null;
+  let highestScore = 0;
+
+  for (const entry of KNOWLEDGE_MATRIX) {
+    let score = 0;
+
+    tokens.forEach(token => {
+      entry.keywords.forEach(kw => {
+        if (token === kw) {
+          score += 3; // Direct keyword match
+        } else if (token.length >= 4 && kw.includes(token)) {
+          score += 1; // Substring match
+        }
+      });
+    });
+
+    if (score > highestScore) {
+      highestScore = score;
+      bestEntry = entry;
+    }
+  }
+
+  // LAYER 3: Threshold Validation
+  if (highestScore >= 3 && bestEntry) {
+    return (bestEntry as KnowledgeItem).response;
+  }
+
+  // LAYER 4: Smart Fallback (Informative & Direct)
+  return "I am trained on the official Hack the Cube 2026 dataset! I didn't recognize that exact phrasing, but I can assist you with:\n• Schedule & Timings (Sept 5-6)\n• ₹1.5 Lakhs Prize Breakdown\n• Problem Statements & 3 Tracks\n• Team Size (2-4 Members) & Solo Matchmaking\n• Food, Wi-Fi & Overnight Stay\n• Venue & Parking (Gate 2)";
 }
 
 /* ═══════════════════════════════════════════════
@@ -79,7 +212,6 @@ export function CubeConcierge() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const lastTopicRef = useRef<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const streamIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -103,96 +235,26 @@ export function CubeConcierge() {
     };
   }, []);
 
-  const synthesizeResponse = (userInput: string): string => {
-    const text = userInput.toLowerCase().trim();
-
-    // 1. Handle Greetings & Small Talk
-    if (text.match(/\b(hi|hello|hey|yo|sup|greetings|namaste|morning|evening)\b/)) {
-      lastTopicRef.current = "greeting";
-      return `${getRandomItem(INTROS)}I'm the Cube Concierge, your AI guide for Hack the Cube 2026. What can I help you with—schedule, prizes, tracks, rules, or venue details?`;
-    }
-
-    // 2. Handle Follow-up Confirmations ("are you sure?", "really?", "is this true?")
-    if (text.match(/\b(sure|really|true|verified|certain|confirm|promise)\b/)) {
-      if (lastTopicRef.current && EVENT_FACTS[lastTopicRef.current]) {
-        return `${getRandomItem(CONFIRMATIONS)}${EVENT_FACTS[lastTopicRef.current]}`;
-      }
-      return `${getRandomItem(CONFIRMATIONS)}All information I provide is pulled straight from the official CSI Hack the Cube 2026 documentation.`;
-    }
-
-    // 3. Entity & Topic Matching Engine
-    let responseParts: string[] = [];
-
-    if (text.match(/\b(when|time|schedule|clock|itinerary|date|september|timing|hours|start|end)\b/)) {
-      lastTopicRef.current = "schedule";
-      responseParts.push(EVENT_FACTS.schedule);
-    }
-
-    if (text.match(/\b(prize|money|reward|win|cash|amount|150000|runner|pool|goodies)\b/)) {
-      lastTopicRef.current = "prizes";
-      responseParts.push(EVENT_FACTS.prizes);
-    }
-
-    if (text.match(/\b(track|domain|problem|challenge|statement|18|fintech|health|agriculture)\b/)) {
-      lastTopicRef.current = "tracks";
-      responseParts.push(EVENT_FACTS.tracks);
-    }
-
-    if (text.match(/\b(team|size|member|individual|alone|wolf|leader|regist|fee)\b/)) {
-      lastTopicRef.current = "teams";
-      responseParts.push(EVENT_FACTS.teams);
-    }
-
-    if (text.match(/\b(rule|plagiarism|prebuilt|github|code|allowed|disqualify|guideline)\b/)) {
-      lastTopicRef.current = "rules";
-      responseParts.push(EVENT_FACTS.rules);
-    }
-
-    if (text.match(/\b(food|meal|lunch|dinner|snack|wifi|stay|overnight|sleep|rest|power)\b/)) {
-      lastTopicRef.current = "facilities";
-      responseParts.push(EVENT_FACTS.facilities);
-    }
-
-    if (text.match(/\b(venue|location|address|where|map|reach|gate|parking|pimpri|dit)\b/)) {
-      lastTopicRef.current = "venue";
-      responseParts.push(EVENT_FACTS.venue);
-    }
-
-    if (text.match(/\b(organizer|csi|faculty|chaya|omkaresh|kulkarni|president|hod|principal|sherje)\b/)) {
-      lastTopicRef.current = "organizers";
-      responseParts.push(EVENT_FACTS.organizers);
-    }
-
-    // Synthesize dynamically built prose
-    if (responseParts.length > 0) {
-      let finalSentence = getRandomItem(INTROS) + responseParts.join(getRandomItem(CONNECTORS));
-      return finalSentence;
-    }
-
-    // Fallback for unknown queries
-    return `I'm tracking all details for Hack the Cube 2026! I didn't recognize that specific detail, but I can break down the schedule, prize pool (₹1.5L), tracks, team rules, or facilities for you. What would you like to explore?`;
-  };
-
   const handleSend = useCallback(() => {
     const trimmed = input.trim();
     if (!trimmed || isTyping) return;
 
-    // 1. Render user message
+    // 1. Render User Input
     setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
     setInput("");
     setIsTyping(true);
 
-    // 2. Synthesize dynamic response
-    const generatedReply = synthesizeResponse(trimmed);
+    // 2. Match Against Matrix
+    const answer = queryMatrix(trimmed);
 
-    // 3. Append empty system message container
+    // 3. Create UI Container for System Output
     setMessages((prev) => [...prev, { role: "system", text: "" }]);
 
-    // 4. Stream characters at 12ms per char for organic LLM generation feel
+    // 4. Stream Output at 10ms per char
     let charIndex = 0;
     streamIntervalRef.current = setInterval(() => {
       charIndex++;
-      const currentText = generatedReply.slice(0, charIndex);
+      const currentText = answer.slice(0, charIndex);
       setMessages((prev) => {
         const newArr = [...prev];
         if (newArr.length > 0 && newArr[newArr.length - 1].role === "system") {
@@ -201,11 +263,11 @@ export function CubeConcierge() {
         return newArr;
       });
 
-      if (charIndex >= generatedReply.length) {
+      if (charIndex >= answer.length) {
         if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
         setIsTyping(false);
       }
-    }, 12);
+    }, 10);
   }, [input, isTyping]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
