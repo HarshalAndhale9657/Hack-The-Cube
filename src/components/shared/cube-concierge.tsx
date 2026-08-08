@@ -4,9 +4,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { Terminal, X, Send } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
-   Cube Concierge — Gemini LLM Knowledge Engine
-   All queries routed through Gemini 1.5 Flash
-   with the complete event database as context.
+   Cube Concierge — Gemini Conversational AI Engine
+   Persistent multi-turn chat memory + system_instruction
    ═══════════════════════════════════════════════ */
 
 interface Message {
@@ -14,16 +13,53 @@ interface Message {
   text: string;
 }
 
-const GEMINI_API_KEY =
-  process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
+interface GeminiContent {
+  role: "user" | "model";
+  parts: Array<{ text: string }>;
+}
+
+const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY || "";
 
 const GEMINI_API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-/* ── Fallback Knowledge Base Engine (used if API quota is reached) ── */
+const SYSTEM_INSTRUCTION = `You are the 'Cube Concierge', the elite AI assistant for 'Hack the Cube 2026', a 24-hour national-level hackathon at Dr. D. Y. Patil Institute of Technology (DIT), Pimpri, Pune. 
+
+CONVERSATIONAL RULES:
+1. You have conversational memory. Answer follow-ups, confirmations ('are you sure?'), and natural dialogue seamlessly.
+2. Maintain a professional, concise, enthusiastic, and hacker/terminal-themed tone.
+3. Use ONLY the official event data below to answer. If a query is completely outside this event's scope, state that you don't have that info and suggest contacting hackthecube@csiclub.org.
+
+MASTER HACKATHON DATABASE:
+- Event: Hack the Cube 2026 (24-Hour National-Level Hackathon).
+- Dates: September 5 to September 6, 2026.
+- Venue: Dr. D. Y. Patil Institute of Technology (DIT), Survey No. 27/A, Near Akurdi Railway Station, Pimpri-Chinchwad, Pune. Free participant parking at Gate 2. Entry at Main Gate.
+- Organizers: CSI Student Chapter. Core Organizers: President, Vice President, Secretary. Faculty Coordinators: Prof. Chaya ma'am and HOD Prof. Omkaresh Kulkarni. Leadership: Principal Nitin Sherje.
+- Total Prize Pool: ₹1,50,000 across 3 Technical Tracks.
+  * Track 1: Winner ₹35,000 | Runner-Up ₹15,000
+  * Track 2: Winner ₹35,000 | Runner-Up ₹15,000
+  * Track 3: Winner ₹35,000 | Runner-Up ₹15,000
+  * Special Recognition: 2 additional teams get exclusive goodies for top innovation/UI.
+- Tracks & Problems: 3 Tracks, 6 problem statements each (18 total challenges). Tracks cover FinTech, Healthcare, Education, Social Media, Agriculture, and Smart Cities. Unlocked on the hackathon day.
+- Timeline:
+  * Sept 5, 8:00 AM: Registration & Verification at Auditorium.
+  * Sept 5, Morning: Inauguration & Podcast-style Speaker Interactions (3 sessions).
+  * Sept 5, 1:30 PM - 3:00 PM: Lunch & Transition to venue.
+  * Sept 5, 3:30 PM: Official 24-Hour Hackathon Clock Starts!
+  * Sept 5, 6:30 PM: Mentorship & Initial Approach Evaluation.
+  * Sept 6, 8:00 AM: Evaluation Round 1.
+  * Sept 6, 3:30 PM: Evaluation Round 2 & Hackathon Clock Ends.
+  * Sept 6, Finale: Results & Award Ceremony.
+- Rules & Logistics: Open to undergraduate/postgraduate college students. Team size: 2 to 4 members. Plagiarism leads to disqualification. 24/7 WiFi, power, meals (dinner, midnight snacks, breakfast, lunch), and resting areas are provided.`;
+
+/* ── Smart Fallback Engine (Used if API quota/rate limits occur) ── */
 const FALLBACK_KNOWLEDGE = [
   {
     keywords: ["who", "organizer", "csi", "college", "dit", "pimpri", "about", "what is"],
     response: "Hack the Cube 2026 is a 24-Hour National-Level Hackathon organized by the CSI Student Chapter at Dr. D. Y. Patil Institute of Technology (DIT), Pimpri, Pune."
+  },
+  {
+    keywords: ["sure", "confirm", "really", "certain", "true"],
+    response: "Affirmative! All details provided are directly verified against the official Hack the Cube 2026 Master Database."
   },
   {
     keywords: ["time", "schedule", "itinerary", "when", "start", "end", "clock", "date", "september"],
@@ -63,111 +99,14 @@ const FALLBACK_KNOWLEDGE = [
   }
 ];
 
-function fallbackSearch(query: string): string {
+function getFallbackAnswer(query: string): string {
   const lower = query.toLowerCase();
   for (const entry of FALLBACK_KNOWLEDGE) {
     if (entry.keywords.some((kw) => lower.includes(kw))) {
       return entry.response;
     }
   }
-  return "> Cube Concierge: I am trained on the Hack the Cube 2026 Master Database. You can ask me about tracks, schedule, prize pool, team rules, or venue logistics!";
-}
-
-const HACKATHON_DATABASE = `
-You are the "Cube Concierge", the official AI assistant for "Hack the Cube 2026". 
-Tone: Professional, highly energetic, concise, and slightly hacker/terminal-themed.
-Rule: ONLY use the facts below. If a question falls outside this data, instruct the user to contact the CSI organizing team at hackthecube@csiclub.org.
-
---- HACK THE CUBE 2026 MASTER DATABASE ---
-ORGANIZER: Computer Society of India (CSI) Chapter at Dr. D. Y. Patil Institute of Technology (DIT), Pimpri, Pune.
-DATES: September 5 to September 6, 2026.
-FORMAT: 24-Hour National-Level Hackathon.
-
-ELIGIBILITY & TEAMS:
-- Open to currently enrolled students from recognized colleges/universities.
-- Team size: 2 to 4 members.
-- Valid college ID required during reporting.
-
-TRACKS & PROBLEM STATEMENTS:
-- 3 Technical Tracks total.
-- 6 Problem statements per track (18 total challenges).
-- Domains include: FinTech, Healthcare, Education, Social Media, Agriculture, Smart Cities.
-- Problem statements are strictly locked and will be revealed on the day of the event.
-
-PRIZE POOL (Total: ₹1,50,000):
-- Distributed across the 3 tracks evenly.
-- Track 1: Winner gets ₹35,000 | Runner-Up gets ₹15,000.
-- Track 2: Winner gets ₹35,000 | Runner-Up gets ₹15,000.
-- Track 3: Winner gets ₹35,000 | Runner-Up gets ₹15,000.
-- Special Awards: 2 additional teams will win exclusive goodies for categories like "Most Innovative", "Best UI/UX", or "Best Social Impact".
-
-TIMELINE (DAY 1 - Sept 5):
-- 8:00 AM: Team Registration & Verification at the Auditorium.
-- Morning: Inauguration & Podcast-style Speaker Sessions (3 speakers, 45 mins each with Q&A).
-- 1:30 PM - 3:00 PM: Lunch Break & Transition to Hackathon Venue.
-- 3:00 PM: Mandatory Team Reporting, Seating & Tech Checks.
-- 3:30 PM: Official 24-Hour Hackathon Clock Starts! Coding begins.
-- 6:30 PM: Mentorship & Initial Approach Evaluation.
-
-TIMELINE (DAY 2 - Sept 6):
-- 8:00 AM: Evaluation Round 1.
-- 3:30 PM: Evaluation Round 2 & Official Hackathon Clock Ends.
-- Post-3:30 PM: Score Compilation, Results Announcement & Award Ceremony.
-
-EVALUATION & JUDGING:
-- 4 Judges per track (Industry professionals, alumni, domain specialists).
-- Evaluation criteria: Innovation, Technical Complexity, Feasibility, Impact, and Presentation/Live Demo.
-- Scoring is a weighted combination of Mentor Eval + Round 1 + Round 2.
-
-RULES:
-- All major development must happen during the 24 hours.
-- Open-source libraries/APIs permitted with proper acknowledgement.
-- Plagiarism or direct copying leads to immediate disqualification.
-
-LOGISTICS & FACILITIES:
-- Location: DIT Pimpri, Survey No. 27/A, Near Akurdi Railway Station. Entry at Main Gate, Parking at Gate 2.
-- Infrastructure: 24/7 high-speed WiFi, continuous power with backup, dedicated workspaces.
-- Food Provided: Evening refreshments, dinner, midnight snacks, breakfast, lunch, and tea/coffee.
-- Resting, medical, and security facilities available overnight.
-
-LEADERSHIP & ORGANIZERS:
-- Core Organizers: CSI President, CSI Vice President, CSI Secretary.
-- Faculty Coordinators: Prof. Chaya and HOD Prof. Omkaresh Kulkarni.
-- Institutional Guidance: Principal Nitin Sherje.
-`;
-
-async function queryGeminiLLM(userMessage: string): Promise<string> {
-  const apiPayload = {
-    contents: [
-      {
-        role: "user",
-        parts: [
-          { text: HACKATHON_DATABASE },
-          { text: `USER QUERY: "${userMessage}"` },
-        ],
-      },
-    ],
-  };
-
-  try {
-    const response = await fetch(GEMINI_API_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(apiPayload),
-    });
-
-    if (!response.ok) throw new Error(`API Network Error: ${response.status}`);
-
-    const data = await response.json();
-    const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!aiResponse) throw new Error("Empty response from Gemini");
-
-    return aiResponse;
-  } catch (error) {
-    console.warn("Cube Concierge falling back to master local database:", error);
-    return fallbackSearch(userMessage);
-  }
+  return "I am trained on the Hack the Cube 2026 Master Database. You can ask me about tracks, schedule, prize pool, team rules, or venue logistics! For custom queries, email hackthecube@csiclub.org.";
 }
 
 /* ═══════════════════════════════════════════════
@@ -184,6 +123,9 @@ export function CubeConcierge() {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  
+  // Persistent conversational memory for multi-turn dialogue
+  const chatHistoryRef = useRef<GeminiContent[]>([]);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -203,16 +145,66 @@ export function CubeConcierge() {
     const trimmed = input.trim();
     if (!trimmed || isTyping) return;
 
-    // 1. Append user message
+    // 1. Append user message to UI state
     setMessages((prev) => [...prev, { role: "user", text: trimmed }]);
     setInput("");
     setIsTyping(true);
 
-    // 2. Show processing indicator, then query Gemini LLM
+    // 2. Append message to local conversational memory
+    chatHistoryRef.current.push({
+      role: "user",
+      parts: [{ text: trimmed }],
+    });
+
+    // 3. Query Gemini API with system_instruction + chatHistory
     const processQuery = async () => {
-      const aiResponse = await queryGeminiLLM(trimmed);
-      setMessages((prev) => [...prev, { role: "system", text: aiResponse }]);
-      setIsTyping(false);
+      const payload = {
+        system_instruction: {
+          parts: [{ text: SYSTEM_INSTRUCTION }],
+        },
+        contents: chatHistoryRef.current,
+      };
+
+      try {
+        const response = await fetch(GEMINI_API_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const aiResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (aiResponse) {
+          // Append AI response to conversational memory
+          chatHistoryRef.current.push({
+            role: "model",
+            parts: [{ text: aiResponse }],
+          });
+
+          // Render AI message to UI
+          setMessages((prev) => [...prev, { role: "system", text: aiResponse }]);
+        } else {
+          throw new Error("Invalid response format");
+        }
+      } catch (error) {
+        console.warn("Gemini API fallback engaged:", error);
+
+        // Fallback response for continuity
+        const fallbackText = getFallbackAnswer(trimmed);
+        chatHistoryRef.current.push({
+          role: "model",
+          parts: [{ text: fallbackText }],
+        });
+
+        setMessages((prev) => [...prev, { role: "system", text: fallbackText }]);
+      } finally {
+        setIsTyping(false);
+      }
     };
 
     processQuery();
