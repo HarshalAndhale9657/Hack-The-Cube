@@ -129,6 +129,7 @@ export default function SinglePageHome() {
       <GradientDivider />
 
       {/* 08. Partnership — Backed by Industry Leaders */}
+      <br></br>
       <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="sponsors">
         <SectionHeading
@@ -136,10 +137,10 @@ export default function SinglePageHome() {
           overline="Partnership"
           title="Backed by Industry Leaders"
           subtitle="Our sponsors powering Hack the Cube 2026"
-        />
+        /><br></br>
         <SponsorGrid />
       </SectionContainer>
-      </div>
+      </div><br></br>
 
       <GradientDivider />
 

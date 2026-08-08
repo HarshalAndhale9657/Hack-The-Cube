@@ -36,13 +36,13 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
     <div className="w-full space-y-16 pt-4">
       {/* Total Pool Counter Header */}
       <ScrollReveal>
-        <div className="text-center bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/10 max-w-2xl mx-auto space-y-2">
+        <div className="text-center bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/10 max-w-2xl mx-auto space-y-2" style={{ marginLeft: "22%" }}>
           <span className="text-overline text-orange-500 font-mono tracking-widest block">Total Prize Pool</span>
           <div className="text-display-xl text-orange-500 font-display">
             <Counter value={300000} prefix="₹" suffix="+" />
           </div>
           <p className="text-body text-gray-300 font-medium">in cash prizes, internships, incubation & perks</p>
-        </div>
+        </div><br></br><br></br>
       </ScrollReveal>
 
       {/* Top 3 — Podium Layout */}
