@@ -294,6 +294,7 @@ export function CubeConcierge() {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [showBubble, setShowBubble] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -317,6 +318,23 @@ export function CubeConcierge() {
       if (streamIntervalRef.current) clearInterval(streamIntervalRef.current);
     };
   }, []);
+
+  // =====================================================================
+  // 5. PROACTIVE ENGAGEMENT BUBBLE (ATTENTION GRABBER)
+  // =====================================================================
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowBubble(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Hide bubble when chat opens
+  useEffect(() => {
+    if (isOpen) {
+      setShowBubble(false);
+    }
+  }, [isOpen]);
 
   const handleSend = useCallback(() => {
     const trimmed = input.trim();
@@ -362,6 +380,51 @@ export function CubeConcierge() {
 
   return (
     <>
+      {/* ── Proactive Engagement Bubble ── */}
+      {showBubble && !isOpen && (
+        <div
+          id="cube-proactive-bubble"
+          onClick={() => {
+            setShowBubble(false);
+            setIsOpen(true);
+          }}
+          style={{
+            position: "fixed",
+            bottom: 92,
+            right: 20,
+            backgroundColor: "#2563eb",
+            color: "#ffffff",
+            padding: "12px 16px",
+            borderRadius: 12,
+            boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            fontSize: 14,
+            fontFamily: "sans-serif",
+            lineHeight: 1.4,
+            cursor: "pointer",
+            zIndex: 9998,
+            maxWidth: 220,
+            animation: "concierge-bubble-in 0.4s ease forwards",
+          }}
+        >
+          <strong>Psst! 👋</strong>
+          <br />
+          Want to know how to win the ₹1.5 Lakh prize pool? Ask me!
+          {/* Triangle pointer */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: -6,
+              right: 20,
+              width: 0,
+              height: 0,
+              borderWidth: "6px 6px 0",
+              borderStyle: "solid",
+              borderColor: "#2563eb transparent transparent transparent",
+            }}
+          />
+        </div>
+      )}
+
       {/* ── Floating Action Button ── */}
       <button
         onClick={() => setIsOpen((o) => !o)}
@@ -628,6 +691,16 @@ export function CubeConcierge() {
           }
           50% {
             opacity: 1;
+          }
+        }
+        @keyframes concierge-bubble-in {
+          from {
+            opacity: 0;
+            transform: translateY(15px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
         }
         #cube-concierge-chat ::-webkit-scrollbar {
