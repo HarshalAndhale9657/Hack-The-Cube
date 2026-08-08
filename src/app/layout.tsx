@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SmoothScroller } from "@/components/layout/smooth-scroller";
 import { siteConfig } from "@/content/site-config";
+import { CubeConcierge } from "@/components/shared/cube-concierge";
 import "../tailwind.css";
 
 export const metadata: Metadata = {
@@ -58,6 +59,7 @@ export default function RootLayout({
         <Navbar />
         <main style={{ paddingTop: "var(--navbar-h)" }}>{children}</main>
         <Footer />
+        <CubeConcierge />
       </body>
     </html>
   );
