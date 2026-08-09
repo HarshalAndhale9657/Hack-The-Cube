@@ -39,9 +39,9 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
         <div className="text-center bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/10 max-w-2xl mx-auto space-y-2">
           <span className="text-overline text-orange-500 font-mono tracking-widest block">Total Prize Pool</span>
           <div className="text-display-xl text-orange-500 font-display animate-shimmer">
-            <Counter value={300000} prefix="₹" suffix="+" />
+            ₹1,50,000
           </div>
-          <p className="text-body text-gray-300 font-medium">in cash prizes, internships, incubation & perks</p>
+          <p className="text-body text-gray-300 font-medium">1.5 Lakh Total Prize Pool</p>
         </div>
       </ScrollReveal>
 

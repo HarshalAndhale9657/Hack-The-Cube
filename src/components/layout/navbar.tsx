@@ -101,14 +101,13 @@ export function Navbar() {
           }}
         >
           {/* Logo — Left */}
-          <a
-            href="#hero"
-            onClick={(e) => handleNavClick(e, "#hero")}
-            className="flex items-center gap-2 font-display font-bold text-lg md:text-xl text-gray-050 hover:text-orange-500 transition-colors z-10 shrink-0"
+          <Link
+            href="/"
+            className="flex items-center gap-2 cursor-pointer transition-opacity hover:opacity-80 font-display font-bold text-lg md:text-xl text-gray-050 z-10 shrink-0"
           >
             <span className="text-orange-500 font-mono text-xl">◆</span>
             Hack the Cube
-          </a>
+          </Link>
 
           {/* Desktop Navigation — Mega Menu */}
           <div className="hidden lg:flex items-center gap-1 shrink-0">
