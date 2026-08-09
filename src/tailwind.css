@@ -3765,6 +3765,17 @@ footer form.flex.gap-1\.5 button[type="submit"] {
   border-radius: 0 !important;
   border: none !important;
 }
+.max-w-4xl .text-heading-1 {
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  word-wrap: normal !important;
+  hyphens: none !important;
+  white-space: normal !important;
+}
+.max-w-4xl .flex.flex-col.space-y-4 {
+  flex: 1 1 60% !important;
+  min-width: 0 !important;
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;

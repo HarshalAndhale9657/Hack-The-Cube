@@ -5,7 +5,7 @@ const PLACEHOLDER = "/images/placeholder.png";
 export const teamMembers: TeamMember[] = [
   {
     id: "tm-1",
-    name: "Aarav Sharma",
+    name: "Soham Ingole",
     photoUrl: PLACEHOLDER,
     position: "President",
     category: "core",
@@ -14,7 +14,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     id: "tm-2",
-    name: "Rhea Verma",
+    name: "Sumeet Gite",
     photoUrl: PLACEHOLDER,
     position: "Vice President",
     category: "core",
@@ -31,7 +31,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     id: "tm-4",
-    name: "Ishaan Mehta",
+    name: "Samiksha Hagawane",
     photoUrl: PLACEHOLDER,
     position: "Secretary",
     category: "student-coordinator",
