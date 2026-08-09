@@ -628,6 +628,66 @@ form .space-y-4 > * + * {
 }
 
 /* ============================================
+   SURGICAL UI POLISH & ALIGNMENT FIXES
+   ============================================ */
+
+/* 1. Interactive 3D Cube centering */
+#hero .lg\:col-span-5 {
+  margin: 0 auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding-top: 0 !important;
+}
+
+/* 2. "Last Year's Memories" Scrollbar/Pagination pills */
+#highlights .flex.items-center.gap-2 button.rounded-full,
+#gallery .flex.items-center.gap-2 button.rounded-full {
+  height: 6px !important;
+  width: 6px !important;
+  border-radius: 50px !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+}
+#highlights .flex.items-center.gap-2 button.rounded-full.w-8,
+#gallery .flex.items-center.gap-2 button.rounded-full.w-8 {
+  width: 24px !important;
+}
+
+/* 3. Lock Icon ("Released on Hackathon Day") centering */
+#challenges .w-20.h-20.rounded-2xl, #problems .w-20.h-20.rounded-2xl {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 80px !important;
+}
+
+/* 4. "₹3,00,000+ Total Prize Pool" Box centering */
+#prizes > div > div {
+  align-items: center !important;
+  text-align: center !important;
+}
+#prizes .text-center.bg-white\/5.rounded-3xl {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 5 & 6. Venue & FAQ Filter Tabs sleek sizing */
+#venue button, #faq button, #faq .flex.flex-wrap.gap-2 button {
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  border-radius: 999px !important;
+  height: auto !important;
+  line-height: normal !important;
+  display: inline-flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 0 !important;
+}
+
+/* ============================================
    Reduced Motion — WCAG Requirement
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
