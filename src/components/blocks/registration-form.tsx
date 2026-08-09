@@ -130,6 +130,7 @@ export function RegistrationForm() {
   const [tshirtSize, setTshirtSize] = useState("");
   const [dietaryPreference, setDietaryPreference] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [transactionId, setTransactionId] = useState("");
 
   /* ── Submission state ── */
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -371,6 +372,7 @@ export function RegistrationForm() {
       teamName: type === "team" ? teamName : "",
       tshirtSize,
       dietaryPreference,
+      transactionId,
       members: type === "individual" ? [members[0]] : members,
       submittedAt: new Date().toISOString(),
     };
@@ -441,6 +443,7 @@ export function RegistrationForm() {
     setTshirtSize("");
     setDietaryPreference("");
     setAgreedToTerms(false);
+    setTransactionId("");
     setIsSubmitted(false);
     setRegistrationId("");
     setErrorMsg("");
@@ -960,6 +963,51 @@ export function RegistrationForm() {
                     </a>
                   </span>
                 </label>
+
+                {/* ── UPI Payment Card ── */}
+                <div className="bg-black/20 border border-white/10 rounded-xl p-6 text-center space-y-4 mt-6">
+                  <div className="flex flex-col items-center justify-center space-y-2">
+                    <div className="p-3 bg-white rounded-xl shadow-lg inline-block">
+                      <img
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dhackthecube%40okhdfc%26pn%3DHack%20The%20Cube"
+                        alt="UPI QR Code"
+                        width={150}
+                        height={150}
+                        className="w-[150px] h-[150px] object-contain rounded-lg"
+                      />
+                    </div>
+                    <p className="text-body font-semibold text-gray-050 mt-2">
+                      Scan to Pay Registration Fee
+                    </p>
+                    <p className="text-caption text-orange-400 font-mono">
+                      UPI ID: hackthecube@okhdfc
+                    </p>
+                  </div>
+
+                  <div className="text-left space-y-1.5 pt-2">
+                    <label
+                      htmlFor="transaction-id"
+                      className="block text-body-sm font-medium text-gray-200"
+                    >
+                      12-Digit UTR / Transaction ID <span className="text-orange-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="transaction-id"
+                      required
+                      minLength={12}
+                      maxLength={12}
+                      value={transactionId}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^0-9a-zA-Z]/g, "").slice(0, 12);
+                        setTransactionId(val);
+                      }}
+                      disabled={isSubmitting}
+                      placeholder="e.g. 312345678901"
+                      className="w-full px-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-gray-050 placeholder:text-gray-500 focus:border-orange-500 outline-none transition-all text-body font-mono"
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -994,10 +1042,10 @@ export function RegistrationForm() {
         ) : (
           <button
             onClick={handleSubmit}
-            disabled={!agreedToTerms || isSubmitting || isClosed}
+            disabled={!agreedToTerms || transactionId.trim().length < 12 || isSubmitting || isClosed}
             className={cn(
               "btn-primary py-3.5 px-8 rounded-lg font-semibold transition-all duration-200 shadow-[0_0_18px_rgba(249,115,22,0.35)] hover:shadow-[0_0_25px_rgba(249,115,22,0.55)]",
-              (!agreedToTerms || isClosed || isSubmitting) &&
+              (!agreedToTerms || transactionId.trim().length < 12 || isClosed || isSubmitting) &&
                 "opacity-50 cursor-not-allowed shadow-none"
             )}
             id="reg-submit-btn"
@@ -1009,7 +1057,7 @@ export function RegistrationForm() {
                 {submitMessage}
               </>
             ) : (
-              "Submit Registration"
+              "Verify Payment & Register"
             )}
           </button>
         )}
