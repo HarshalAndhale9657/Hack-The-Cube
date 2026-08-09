@@ -550,8 +550,8 @@ label[for*="-year"] {
 
 /* ── 1. Section-to-Section Separation (Crucial) ── */
 section, .w-full.mx-auto.flex.flex-col.items-center, main > div[id] {
-  padding-top: max(80px, 6rem) !important;
-  padding-bottom: max(80px, 6rem) !important;
+  padding-top: clamp(40px, 6vw, 64px) !important;
+  padding-bottom: clamp(40px, 6vw, 64px) !important;
   margin-top: 0 !important;
 }
 #hero {
@@ -564,13 +564,24 @@ section, .w-full.mx-auto.flex.flex-col.items-center, main > div[id] {
 .text-center.bg-white\/5.p-6.sm\:p-8.rounded-3xl,
 .text-center.bg-white\/5.rounded-3xl {
   position: relative !important;
-  margin-bottom: 40px !important;
+  margin-bottom: clamp(24px, 4vw, 40px) !important;
   transform: none !important;
 }
 
 /* ── 3. Card Padding & Text Sizing ── */
 .glass-panel, .bg-white\/5, .bg-navy-900 {
-  padding: max(24px, 1.5rem) !important;
+  padding: clamp(20px, 3vw, 32px) !important;
+}
+/* Typography Proportional Scaling */
+.text-display-lg, .text-display-xl {
+  font-size: clamp(2rem, 5vw, 3.5rem) !important;
+  line-height: 1.1 !important;
+}
+.text-heading-1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem) !important;
+}
+.text-heading-2 {
+  font-size: clamp(1.5rem, 3vw, 2rem) !important;
 }
 
 /* ── 4. Flex & Grid Gap Alignment ── */
@@ -578,11 +589,12 @@ section, .w-full.mx-auto.flex.flex-col.items-center, main > div[id] {
 .space-y-16, .space-y-12, .space-y-8 {
   display: flex !important;
   flex-direction: column !important;
-  row-gap: 32px !important;
+  row-gap: clamp(24px, 4vw, 40px) !important;
 }
-/* Ensure grid layouts have minimum gaps */
+/* Ensure grid layouts have minimum gaps and flexible auto-fit columns */
 .grid {
-  gap: 32px !important;
+  gap: clamp(20px, 3vw, 32px) !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 /* ── Scrollbar hide utility (venue tabs, carousels) ── */
