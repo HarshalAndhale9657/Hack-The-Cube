@@ -7,6 +7,7 @@ interface SectionHeadingProps {
   subtitle?: string;
   align?: "left" | "center";
   className?: string;
+  titleClassName?: string;
 }
 
 export function SectionHeading({
@@ -16,6 +17,7 @@ export function SectionHeading({
   subtitle,
   align = "center",
   className,
+  titleClassName,
 }: SectionHeadingProps) {
   return (
     <div
@@ -32,7 +34,7 @@ export function SectionHeading({
           {overline}
         </span>
       )}
-      <h2 className="text-display-lg text-gray-050 font-display tracking-tight relative z-10 leading-tight">
+      <h2 className={cn("text-display-lg text-gray-050 font-display tracking-tight relative z-10 leading-tight", titleClassName)}>
         {title}
       </h2>
       {subtitle && (

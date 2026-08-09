@@ -36,7 +36,7 @@ export default function SinglePageHome() {
       </section>
 
       <GradientDivider />
-      <div style={{ marginLeft: "8.5%" }}>
+
       {/* 04. Learn & Engage — Technical Talk Show & Keynotes */}
       <SectionContainer id="speakers">
         <SectionHeading
@@ -44,17 +44,17 @@ export default function SinglePageHome() {
           overline="Learn & Engage"
           title="Interactive Podcast Sessions & Speakers"
           subtitle="3 industry professionals in podcast-style discussions (30 min each + 15 min Q&A) — questions sourced from registered participants"
-        /><br></br>
+        />
         <SpeakerGrid speakers={speakers} />
       </SectionContainer>
-      </div><br></br>
+
       <GradientDivider />
 
       {/* 12. Highlights — Last Year's Memories (Self-contained Sticky Scroll Section) */}
       <GalleryGrid />
 
       <GradientDivider />
-      <div style={{ marginLeft: "8.5%" }}>
+
       {/* 02. Understand — About the Hackathon */}
       <SectionContainer id="about">
         <SectionHeading
@@ -62,29 +62,26 @@ export default function SinglePageHome() {
           overline="Understand"
           title="About the Hackathon"
           subtitle="Discover the mission, vision, and objectives behind Hack the Cube 2026"
-        /><br></br>
+        />
         <EventInfoBlock />
       </SectionContainer>
-      </div><br></br>
+
       <GradientDivider />
 
       {/* 03. Explore Tracks — Industry Innovation Domains */}
-      <div style={{ marginLeft: "9%" }}>
       <SectionContainer id="tracks">
         <SectionHeading
           number="03"
           overline="Explore Tracks"
           title="Industry Innovation Domains"
           subtitle="Swipe through our specialized challenge tracks engineered for maximum impact"
-        /><br></br>
+        />
         <IndustryCarousel />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* 05. Schedule — 24-Hour Event Itinerary */}
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="timeline">
         <SectionHeading
           number="05"
@@ -94,27 +91,24 @@ export default function SinglePageHome() {
         />
         <TimelineRail events={timelineEvents} />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* 06. Rewards & Perks — ₹1,50,000 Prize Pool */}
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="prizes">
         <SectionHeading
           number="06"
           overline="Rewards & Perks"
           title="₹1,50,000 Prize Pool"
+          titleClassName="animate-shimmer"
           subtitle="3 Track Winners (₹35,000 each) + 3 Runners-Up (₹15,000 each) + 2 Special Recognition Awards with exclusive goodies"
-        /><br></br>
+        />
         <PrizePodium prizePool={prizePool} />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* 07. Challenges — Problem Statements */}
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="problems">
         <SectionHeading
           number="07"
@@ -124,35 +118,30 @@ export default function SinglePageHome() {
         />
         <ProblemStatementsBlock />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* 08. Partnership — Backed by Industry Leaders */}
-      <br></br>
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="sponsors">
         <SectionHeading
           number="08"
           overline="Partnership"
           title="Backed by Industry Leaders"
           subtitle="Our sponsors powering Hack the Cube 2026"
-        /><br></br>
+        />
         <SponsorGrid />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* 09. Organizers — Meet the Team */}
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="team">
         <SectionHeading
           number="09"
           overline="Organizers"
           title="Meet the Team"
           subtitle="The student leads and faculty advisors behind CSI Student Chapter's flagship hackathon"
-        /><br></br>
+        />
         <div className="w-full space-y-12">
           <div>
             <h3 className="text-overline text-orange-500 mb-6 text-center font-mono">Core Organizers</h3>
@@ -167,42 +156,37 @@ export default function SinglePageHome() {
             <TeamGrid members={teamMembers} category="student-coordinator" />
           </div>
         </div>
-      </SectionContainer></div>
+      </SectionContainer>
 
       <GradientDivider />
 
       {/* 10. Institutional Guidance — College Leadership */}
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="leadership">
         <SectionHeading
           number="10"
           overline="Institutional Guidance"
           title="College Leadership"
           subtitle="Messages of encouragement from our Director and Head of Department"
-        /><br></br>
+        />
         <LeadershipGrid members={leadershipMembers} />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* 11. Location & Facilities — Venue & Logistics */}
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="venue">
         <SectionHeading
           number="11"
           overline="Location & Facilities"
           title="Venue & Logistics"
           subtitle="Campus address, inauguration auditorium, 24/7 computing facility, and WiFi details"
-        /><br></br>
+        />
         <VenueBlock />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* 13. Answers — Frequently Asked Questions */}
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="faq">
         <SectionHeading
           number="13"
@@ -212,13 +196,10 @@ export default function SinglePageHome() {
         />
         <FAQAccordion faqs={faqs} />
       </SectionContainer>
-      </div><br></br>
 
       <GradientDivider />
 
       {/* Final CTA Section */}
-      <br></br>
-      <div style={{ marginLeft: "8.5%" }}>
       <SectionContainer id="register">
         <ScrollReveal>
           <div className="text-center py-8">
@@ -242,7 +223,6 @@ export default function SinglePageHome() {
           </div>
         </ScrollReveal>
       </SectionContainer>
-      </div><br></br>
     </>
   );
 }

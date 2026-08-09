@@ -33,16 +33,16 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
   const specialAwards = prizePool.tiers.slice(3);
 
   return (
-    <div className="w-full space-y-16 pt-4">
+    <div className="w-full space-y-16 pt-4" style={{ display: "flex", flexDirection: "column", gap: "4rem", overflow: "hidden" }}>
       {/* Total Pool Counter Header */}
       <ScrollReveal>
-        <div className="text-center bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/10 max-w-2xl mx-auto space-y-2" style={{ marginLeft: "22%" }}>
+        <div className="text-center bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/10 max-w-2xl mx-auto space-y-2">
           <span className="text-overline text-orange-500 font-mono tracking-widest block">Total Prize Pool</span>
-          <div className="text-display-xl text-orange-500 font-display">
+          <div className="text-display-xl text-orange-500 font-display animate-shimmer">
             <Counter value={300000} prefix="₹" suffix="+" />
           </div>
           <p className="text-body text-gray-300 font-medium">in cash prizes, internships, incubation & perks</p>
-        </div><br></br><br></br>
+        </div>
       </ScrollReveal>
 
       {/* Top 3 — Podium Layout */}
@@ -55,7 +55,7 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
               <GlassCard
                 glow={style.glow}
                 className={cn(
-                  "p-7 sm:p-8 text-center h-full flex flex-col justify-between space-y-6 border-white/10 transition-all duration-300",
+                  "p-7 sm:p-8 text-center h-full flex flex-col justify-between space-y-6 border-white/10 transition-all duration-300 hover-float",
                   i === 0 && "border-2 border-orange-500 bg-orange-500/10 shadow-2xl glow-orange md:scale-105 md:-translate-y-3 ring-1 ring-orange-500/50 p-8 sm:p-9 relative z-10"
                 )}
               >
@@ -91,7 +91,7 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
             </ScrollReveal>
           );
         })}
-      </div><br></br>
+      </div>
 
       {/* Special Awards */}
       {specialAwards.length > 0 && (
@@ -99,13 +99,13 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
           <h3 className="text-heading-1 text-gray-050 text-center font-display flex items-center justify-center gap-2">
             <Award size={24} className="text-orange-500" />
             Special Category Awards
-          </h3><br></br>
+          </h3>
           <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {specialAwards.map((tier) => {
               const IconComp = prizeIconMap[tier.icon || ""] || Award;
               return (
                 <StaggerItem key={tier.id}>
-                  <GlassCard className="p-6 sm:p-8 h-full flex flex-col justify-between space-y-5 border-white/10">
+                  <GlassCard className="p-6 sm:p-8 h-full flex flex-col justify-between space-y-5 border-white/10 hover-float">
                     <div className="space-y-4 flex flex-col items-center text-center">
                       <div className="flex flex-col items-center gap-3">
                         <span className="p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center shrink-0">
@@ -135,7 +135,7 @@ export function PrizePodium({ prizePool }: PrizePodiumProps) {
         </div>
       )}
 
-      <br></br>
+      
 
       {/* General Perks for All Participants */}
       <ScrollReveal>
