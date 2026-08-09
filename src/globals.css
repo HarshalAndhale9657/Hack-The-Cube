@@ -875,6 +875,86 @@ footer form input {
 }
 
 /* ============================================
+   REGISTRATION OVERHAUL & FAQ SCALING
+   ============================================ */
+
+/* PART 1: REGISTRATION FORM UI OVERHAUL */
+.max-w-\[550px\] {
+  max-width: 550px !important;
+  margin: 40px auto !important;
+  padding: 32px !important;
+  background: rgba(25, 25, 25, 0.6) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+[aria-label="Registration steps"] {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  overflow-x: auto !important;
+  margin-bottom: 32px !important;
+  gap: 12px;
+  padding-bottom: 8px;
+}
+
+[aria-label="Registration steps"] span {
+  white-space: nowrap !important;
+  font-size: 13px !important;
+  text-align: center;
+}
+
+.max-w-\[550px\] input, 
+.max-w-\[550px\] select, 
+.max-w-\[550px\] textarea {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 14px 16px !important;
+  margin-top: 6px !important;
+  margin-bottom: 20px !important;
+  border-radius: 8px !important;
+  background: rgba(0,0,0,0.2) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+}
+
+.max-w-\[550px\] label {
+  display: block !important;
+  text-align: left !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-bottom: 4px !important;
+  width: 100%;
+}
+
+/* PART 2: FAQ BOX RESPONSIVE SHRINK */
+#faq .glass-panel,
+#faq .glass-panel > button {
+  max-width: 650px !important;
+  margin: 0 auto 8px auto !important;
+  padding: 14px 20px !important;
+  height: auto !important;
+  min-height: unset !important;
+  border-radius: 10px !important;
+  font-size: 15px !important;
+}
+
+/* PART 3: TIMELINE SCROLL REVEAL (CSS) */
+.timeline-animate {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.timeline-animate.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
    Reduced Motion — WCAG Requirement
    ============================================ */
 @media (prefers-reduced-motion: reduce) {

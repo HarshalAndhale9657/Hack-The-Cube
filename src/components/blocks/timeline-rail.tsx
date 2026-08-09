@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useScroll } from "motion/react";
 import { cn } from "@/lib/utils";
 import type { TimelineEvent } from "@/content/schemas";
@@ -44,6 +44,34 @@ export function TimelineRail({ events }: TimelineRailProps) {
     target: containerRef,
     offset: ["start 80%", "end 20%"],
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // Select all timeline cards/items
+      const timelineItems = document.querySelectorAll('.timeline-card, .timeline-item, [class*="timeline"] > div');
+      
+      // Apply initial hidden class
+      timelineItems.forEach(item => item.classList.add('timeline-animate'));
+
+      // Create the observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+          } else {
+            // Remove class when out of view (disappears on scroll up/down)
+            entry.target.classList.remove('show');
+          }
+        });
+      }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+      timelineItems.forEach(item => observer.observe(item));
+
+      return () => observer.disconnect();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Group events by day
   const grouped = events.reduce<Record<number, TimelineEvent[]>>((acc, ev) => {
