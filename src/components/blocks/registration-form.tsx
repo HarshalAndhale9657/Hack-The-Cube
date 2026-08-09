@@ -32,7 +32,6 @@ const YEAR_OPTIONS = [
   "2nd Year",
   "3rd Year",
   "4th Year",
-  "5th Year",
 ] as const;
 
 /* ═══════════════════════════════════════════════
@@ -465,19 +464,21 @@ export function RegistrationForm() {
         className="glass-panel p-8 sm:p-10 text-center max-w-[550px] mx-auto border border-[#262626] bg-[#0f0f0f] shadow-2xl rounded-2xl"
       >
         {/* Animated success icon */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{
-            delay: 0.15,
-            type: "spring",
-            stiffness: 200,
-            damping: 12,
-          }}
-          className="w-20 h-20 rounded-full bg-success/20 flex items-center justify-center mx-auto mb-6"
-        >
-          <CheckCircle2 size={40} className="text-success" />
-        </motion.div>
+        <div className="success-tick-animate flex justify-center w-full mb-4">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{
+              delay: 0.15,
+              type: "spring",
+              stiffness: 200,
+              damping: 12,
+            }}
+            className="w-20 h-20 rounded-full bg-success/20 flex items-center justify-center mx-auto"
+          >
+            <CheckCircle2 size={40} className="text-success" />
+          </motion.div>
+        </div>
 
         <motion.h2
           initial={{ opacity: 0, y: 10 }}
@@ -487,6 +488,8 @@ export function RegistrationForm() {
         >
           Registration Successful! 🎉
         </motion.h2>
+
+        <p className="text-sm text-zinc-400 text-center mt-2 mb-6">Your Ticket ID is generated below. A confirmation email with further instructions has been sent to your registered address.</p>
 
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -568,6 +571,7 @@ export function RegistrationForm() {
               Arrive at the venue on time — check the timeline!
             </li>
           </ul>
+          <a href="#" className="mt-6 w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#25D366] hover:bg-[#128C7E] text-white font-bold rounded-lg transition-colors shadow-lg shadow-green-900/20">Join WhatsApp Updates Group</a>
         </motion.div>
 
         <button onClick={resetForm} className="btn-secondary px-8 py-3 rounded-lg">
