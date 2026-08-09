@@ -102,6 +102,32 @@ function validateField(field: string, value: string): string | null {
   }
 }
 
+// Template for the background email API call
+const sendConfirmationEmail = async (userEmail: string, userName: string, ticketId: string) => {
+  try {
+    // This payload contains everything needed for the email template
+    const emailPayload = {
+      to: userEmail,
+      subject: "Registration Confirmed: Hack the Cube 2026 🚀",
+      name: userName,
+      ticket_id: ticketId,
+      whatsapp_link: "https://chat.whatsapp.com/YOUR_GROUP_LINK",
+      message: "You are officially registered for Hack the Cube 2026! Join the WhatsApp group for immediate updates."
+    };
+
+    // Placeholder fetch to a generic email endpoint (e.g., Resend, EmailJS, or Custom API)
+    await fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(emailPayload)
+    });
+    
+    console.log("Confirmation email sent to:", userEmail);
+  } catch (error) {
+    console.error("Failed to send email:", error);
+  }
+};
+
 function generateRegId(): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let id = "HTC26-";
@@ -364,7 +390,7 @@ export function RegistrationForm() {
 
     setErrorMsg("");
     setIsSubmitting(true);
-    setSubmitMessage("Securing Your Spot...");
+    setSubmitMessage("Verifying & Sending Email...");
 
     const formData = {
       type,
@@ -392,12 +418,22 @@ export function RegistrationForm() {
       redirect: "follow",
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(async (data) => {
         clearTimeout(processingTimer);
 
         if (data.result === "success") {
           const fallbackId = generateRegId();
-          setRegistrationId(data?.registrationId || fallbackId);
+          const finalRegId = data?.registrationId || fallbackId;
+          
+          setSubmitMessage("Verifying & Sending Email...");
+          const userEmail = members[0]?.email;
+          const userName = members[0]?.fullName;
+          
+          if (userEmail) {
+            await sendConfirmationEmail(userEmail, userName, finalRegId);
+          }
+          
+          setRegistrationId(finalRegId);
           setIsSubmitted(true);
         } else {
           throw new Error("API returned an error");
