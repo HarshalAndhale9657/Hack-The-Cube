@@ -773,6 +773,76 @@ form .space-y-4 > * + * {
 }
 
 /* ============================================
+   FINAL MICRO-UI POLISH & OVERFLOW REPAIR
+   ============================================ */
+
+/* 1. FAQ Search Bar Icon Collision */
+#faq .relative.max-w-md.mx-auto input {
+  padding-left: 44px !important;
+}
+
+/* 2. FAQ Accordion Boxes */
+#faq .glass-panel > button {
+  padding: 16px 24px !important;
+  min-height: 0 !important;
+  max-width: 800px !important;
+  margin: 0 auto 12px auto !important;
+  border-radius: 12px !important;
+}
+
+/* 3. Registration Stepper Text Crushing */
+[aria-label="Registration steps"] span {
+  white-space: nowrap !important;
+  font-size: 14px !important;
+}
+.max-w-\[550px\] {
+  max-width: 600px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+}
+
+/* 4. Dropdown Menu Text Clipping */
+.absolute.top-full.left-0.mt-2.w-84,
+.absolute.top-full.left-0.mt-2.w-90 {
+  min-width: 320px !important;
+  padding: 16px !important;
+  white-space: normal !important;
+}
+
+/* 5. Hero 3D Cube Vertical Alignment */
+#hero .lg\:col-span-5 {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  right: 2% !important;
+  width: 45% !important;
+  max-width: 500px !important;
+  z-index: 1 !important;
+}
+
+/* 6. Newsletter Input Alignment */
+footer form {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: 8px !important;
+  max-width: 400px !important;
+}
+footer form input {
+  flex-grow: 1 !important;
+  padding: 12px 16px !important;
+}
+
+/* 7. Track 1 Winner Box Clipping */
+#prizes .order-1 .glass-panel > div {
+  word-wrap: break-word !important;
+  text-align: center !important;
+  width: 100% !important;
+  padding: 24px !important;
+  height: auto !important;
+  min-height: fit-content !important;
+}
+
+/* ============================================
    PRIZE POOL MODULAR ANIMATIONS (PLUG-AND-PLAY)
    ============================================ */
 
