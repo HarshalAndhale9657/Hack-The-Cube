@@ -409,9 +409,7 @@ export function CubeConcierge() {
             animation: "concierge-bubble-in 0.4s ease forwards",
           }}
         >
-          <strong style={{ color: "#f97316" }}>Psst! 👋</strong>
-          <br />
-          Want to know how to win the ₹1.5 Lakh prize pool? Ask me!
+          <p className="cube-bubble-text">Got questions? Ask me! 👋</p>
           {/* Triangle pointer */}
           <div
             style={{

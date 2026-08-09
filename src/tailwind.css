@@ -3776,6 +3776,19 @@ footer form.flex.gap-1\.5 button[type="submit"] {
   flex: 1 1 60% !important;
   min-width: 0 !important;
 }
+#cube-proactive-bubble {
+  max-width: 200px !important;
+  width: max-content !important;
+  padding: 10px 16px !important;
+  text-align: center !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  border-radius: 12px !important;
+}
+.cube-bubble-text {
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;
