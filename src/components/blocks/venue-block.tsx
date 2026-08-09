@@ -11,7 +11,7 @@ export function VenueBlock() {
   const [activeTab, setActiveTab] = useState<"main" | "inauguration" | "hall">("main");
 
   return (
-    <div className="w-full space-y-8 max-w-5xl mx-auto">
+    <div className="w-full space-y-8 max-w-5xl mx-auto" style={{ display: "flex", flexDirection: "column", gap: "2rem", overflow: "hidden" }}>
       {/* Tabs */}
       <div className="flex md:flex-wrap md:justify-center gap-2 overflow-x-auto scrollbar-hide snap-x pb-2 w-full">
         <button

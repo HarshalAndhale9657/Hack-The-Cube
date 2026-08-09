@@ -19,7 +19,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
 
 export function EventInfoBlock() {
   return (
-    <div className="w-full space-y-16 pt-4">
+    <div className="w-full space-y-16 pt-4" style={{ display: "flex", flexDirection: "column", gap: "4rem", overflow: "hidden" }}>
       {/* Overview & Format */}
       <div className="grid gap-8 md:grid-cols-2 items-stretch">
         <GlassCard className="p-10 lg:p-12 flex flex-col justify-center space-y-6 border-white/10 text-center items-center">
@@ -52,10 +52,10 @@ export function EventInfoBlock() {
           </div>
         </GlassCard>
       </div>
-              <br></br>
+              
       {/* Core Objectives */}
       <div className="space-y-12">
-        <h3 className="text-heading-1 text-gray-050 text-center font-display">Core Objectives</h3><br></br>
+        <h3 className="text-heading-1 text-gray-050 text-center font-display">Core Objectives</h3>
         <StaggerContainer className="grid md:grid-cols-2 gap-8">
           {eventInfo.objectives.map((obj, i) => {
             const objectiveIcons = [Target, Lightbulb, Users, Rocket];
@@ -87,10 +87,10 @@ export function EventInfoBlock() {
           })}
         </StaggerContainer>
       </div>
-        <br></br>
+        
       {/* Why Participate */}
       <div className="space-y-12">
-        <h3 className="text-heading-1 text-gray-050 text-center font-display">Why Participate</h3><br></br>
+        <h3 className="text-heading-1 text-gray-050 text-center font-display">Why Participate</h3>
         <StaggerContainer className="grid md:grid-cols-3 gap-8">
           {eventInfo.whyParticipate.map((benefit, i) => {
             const Icon = iconMap[benefit.icon] || Target;
