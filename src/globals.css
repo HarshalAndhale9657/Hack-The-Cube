@@ -950,8 +950,127 @@ footer form input {
   transition: opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .timeline-animate.show {
+}
+.timeline-animate.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ============================================
+   REGISTRATION MICRO-COLLISION & TIMELINE REVEAL FIX
+   ============================================ */
+
+/* 1. REGISTRATION STEPPER OVERLAP FIX */
+[aria-label="Registration steps"] {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+[aria-label="Registration steps"] > div {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+[aria-label="Registration steps"] [role="listitem"] {
+  width: 28px !important;
+  height: 28px !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 50% !important;
+}
+
+[aria-label="Registration steps"] [aria-hidden="true"] {
+  flex-grow: 1 !important;
+  height: 2px !important;
+  min-width: 12px !important;
+  max-width: 100% !important;
+  background: rgba(255,255,255,0.2) !important;
+}
+
+[aria-label="Registration steps"] span {
+  white-space: nowrap !important;
+  font-size: 12px !important;
+  margin: 0 !important;
+}
+
+/* 2. MEMBER BOX & INPUT COLLISION FIX */
+.max-w-\[550px\] .glass-panel.p-6.rounded-xl {
+  margin-bottom: 40px !important;
+  padding-bottom: 24px !important;
+  border-bottom: 1px dashed rgba(255,255,255,0.1) !important;
+  display: block !important;
+}
+
+#add-member-btn {
+  margin-top: 16px !important;
+  margin-bottom: 32px !important;
+  display: block !important;
+}
+
+/* 3. GIANT T&C CHECKBOX FIX */
+label:has(#agree-terms) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
+  text-align: left !important;
+}
+
+#agree-terms {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  appearance: auto !important;
+  -webkit-appearance: checkbox !important;
+}
+
+label:has(#agree-terms) > span {
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+}
+
+/* 4. REVIEW SUMMARY ALIGNMENT */
+.max-w-\[550px\] .py-3.border-b {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-start !important;
+  padding: 8px 0 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+  font-size: 14px !important;
+  width: 100% !important;
+  gap: 16px !important;
+  word-break: break-word !important;
+}
+
+/* 5. TIMELINE SCROLL REVEAL (FORCED OVERRIDE) */
+.timeline-card, .timeline-content, .timeline-item > div {
+  opacity: 0 !important;
+  transform: translateY(40px) !important;
+  transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  visibility: hidden !important;
+}
+
+.timeline-card.show, .timeline-content.show, .timeline-item > div.show {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  visibility: visible !important;
 }
 
 /* ============================================
